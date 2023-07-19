@@ -48,7 +48,8 @@ Graph::Graph(int _num_nodes, int _time_limit, int memory_lower_bound, int memory
 
         vector<bool> vis(nn, false);
         vector<vector<int>> result_list(nn);
-        for(auto [u, v] : edge_list) {
+        for(auto P : edge_list) {
+            int u = P.first, v = P.second;
             result_list[u - 1].push_back(v - 1);
             result_list[v - 1].push_back(u - 1);
         }
@@ -79,6 +80,14 @@ Graph::Graph(int _num_nodes, int _time_limit, int memory_lower_bound, int memory
 
 
     adj_list = gen_tree(num_nodes);
+    adj_set.clear();
+    adj_set.resize(num_nodes);
+
+    for(int i = 0; i < num_nodes; i++) {
+        for(auto v : adj_list[i]) {
+            adj_set[i].insert(v);
+        }
+    }
     assert((int)adj_list.size() == num_nodes);
 
     for(int id = 0; id < num_nodes; id++) {
@@ -151,6 +160,7 @@ vector<int> Graph::get_path(int from, int to) {
 
 void Graph::reserve_shape(Shape shape) {
     shape.check_valid();
+    cerr << "checked" << endl;
     Shape_vector nm = shape.get_node_mem_range();
     for(int i = 0; i < (int)nm.size(); i++) {
         int node = nm[i].first;
@@ -176,7 +186,6 @@ void Graph::reserve_shape(Shape shape) {
             nodes[node].reserve_memory(t, amount);
         }
     }
-
     for(int i = 1; i < (int)nm.size(); i++) {
         int node1 = nm[i - 1].first;
         int node2 = nm[i].first;

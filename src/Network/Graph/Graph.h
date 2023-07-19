@@ -11,6 +11,7 @@
 #include <functional>
 #include <cassert>
 #include <ctime>
+#include <algorithm>
 #include "../Node/Node.h"
 #include "../Shape/Shape.h"
 #include "../../config.h"

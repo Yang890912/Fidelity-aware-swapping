@@ -22,17 +22,17 @@ double AlgorithmBase::bar(double F) {
     return (1.0 - F);
 }
 double AlgorithmBase::Fswap(double Fa, double Fb) {
+    if(Fa <= A + EPS || Fb <= A + EPS) return 0;
     return Fa * Fb + (1.0 / 3.0) * bar(Fa) * bar(Fb);
 }
 double AlgorithmBase::t2F(double t) {
-    if(t >= 1e5) return 0; 
+    if(t >= 1e5) return 0;
     return A + B * exp(-pow(t / T, n));
 }
 double AlgorithmBase::F2t(double F) {
-    if(F <= EPS) return 1e9;
+    if(F <= A + EPS) return 1e9;
     return T * pow(-log((F - A) / B), 1.0 / n);
 }
-
 double AlgorithmBase::pass_tao(double F) {
     return t2F(F2t(F) + tao);
 }

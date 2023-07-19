@@ -11,13 +11,14 @@ Shape_vector Shape::get_node_mem_range() {
 
 
 double Shape::get_fidelity(double _A, double _B, double _n, double _T, double _tao) {
-    check_valid();
     A = _A, B = _B, n = _n, T = _T, tao = _tao;
+    // cerr << A << " " << B << " " << n << " " << T << " " << tao << endl;
+    check_valid();
     return recursion_get_fidelity(0, (int)node_mem_range.size() - 1);
 }
 
 double Shape::recursion_get_fidelity(int left, int right) {
-    if(left == right - 1) return t2F(F2t(1) + tao);
+    if(left == right - 1) return pass_tao(1);
     int latest = left + 1;
     for(int i = left + 1; i < right; i++) {
         if(node_mem_range[i].second[0].second > node_mem_range[latest].second[0].second) {
@@ -29,24 +30,27 @@ double Shape::recursion_get_fidelity(int left, int right) {
     double Fb = recursion_get_fidelity(latest, right);
 
     int now_swap_time = node_mem_range[latest].second[0].second;
-    int next_swap_time = max(node_mem_range[left].second.back().second, node_mem_range[right].second.front().second);
+    int next_swap_time = min(node_mem_range[left].second.back().second, node_mem_range[right].second.front().second);
     double pass_time = tao * (next_swap_time - now_swap_time);
 
-    return Fswap(t2F(F2t(Fa) + pass_time), t2F(F2t(Fb) + pass_time));
+    // cerr << "l r late = " << left << " " << right << " " << latest << endl;
+    // cerr << "Fa Fb result = " << Fa << " " << Fb << " " << Fswap(t2F(F2t(Fa) + pass_time), t2F(F2t(Fb) + pass_time)) << endl;
+    return t2F(F2t(Fswap(pass_tao(Fa), pass_tao(Fb))) + (pass_time - tao));
 }
 
 double Shape::bar(double F) {
     return (1.0 - F);
 }
 double Shape::Fswap(double Fa, double Fb) {
+    if(Fa <= A + EPS || Fb <= A + EPS) return 0;
     return Fa * Fb + (1.0 / 3.0) * bar(Fa) * bar(Fb);
 }
 double Shape::t2F(double t) {
-    if(t >= 1e5) return 0; 
+    if(t >= 1e5) return 0;
     return A + B * exp(-pow(t / T, n));
 }
 double Shape::F2t(double F) {
-    if(F <= EPS) return 1e9;
+    if(F <= A + EPS) return 1e9;
     return T * pow(-log((F - A) / B), 1.0 / n);
 }
 

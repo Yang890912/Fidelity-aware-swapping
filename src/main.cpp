@@ -23,9 +23,9 @@ pair<int, int> generate_new_request(int num_of_node){
 
 
 int main(){
-    int request_cnt = 10, num_nodes = 30, time_limit = 100;
-    double A = 0.25, B = 0.75, tao = 0.1, T = 10, n = 2;
-    Graph graph(num_nodes, time_limit, 4, 8, A, B, n, T, tao);
+    int request_cnt = 30, num_nodes = 100, time_limit = 10;
+    double A = 0.25, B = 0.75, tao = 0.2, T = 10, n = 2;
+    Graph graph(num_nodes, time_limit, 2, 4, A, B, n, T, tao);
 
     vector<pair<int, int>> requests;
     for(int i = 0; i < request_cnt; i++) {

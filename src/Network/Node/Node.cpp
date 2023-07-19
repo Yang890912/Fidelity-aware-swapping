@@ -2,7 +2,7 @@
 
 Node::Node(int id, int memory, int time_limit): id(id), memory(memory), time_limit(time_limit) {
     memory_table.resize(time_limit, memory);
-    cerr << "memory = " << memory << endl;
+    // cerr << "memory = " << memory << endl;
 }
 
 Node::~Node() {

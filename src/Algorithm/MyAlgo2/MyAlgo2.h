@@ -14,7 +14,6 @@ class MyAlgo2 : public AlgorithmBase {
     vector<vector<vector<vector<double>>>> dp;
     vector<vector<vector<vector<pair<int, int>>>>> par;
     vector<vector<vector<vector<bool>>>> caled;
-    double A, B, n, T, tao;
     pair<Shape, double> calculate_best_shape(int src, int dst);
     double solve_fidelity(int left, int right, int t, int state, vector<int> &path);
     Shape_vector backtracing_shape(int left, int right, int t, int state, vector<int> &path);
