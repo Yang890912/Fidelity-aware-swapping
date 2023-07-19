@@ -35,20 +35,24 @@ double Shape::recursion_get_fidelity(int left, int right) {
     return Fswap(t2F(F2t(Fa) + pass_time), t2F(F2t(Fb) + pass_time));
 }
 
-
 double Shape::bar(double F) {
     return (1.0 - F);
 }
 double Shape::Fswap(double Fa, double Fb) {
-    return Fa * Fb + (1.0 / 3.0) * bar(Fa) * (Fb);
+    return Fa * Fb + (1.0 / 3.0) * bar(Fa) * bar(Fb);
 }
 double Shape::t2F(double t) {
+    if(t >= 1e5) return 0; 
     return A + B * exp(-pow(t / T, n));
 }
 double Shape::F2t(double F) {
-    return pow(-pow(log((F - A) / B), 1 / n), T);
+    if(F <= EPS) return 1e9;
+    return T * pow(-log((F - A) / B), 1.0 / n);
 }
 
+double Shape::pass_tao(double F) {
+    return t2F(F2t(F) + tao);
+}
 void Shape::check_valid() {
     if(DEBUG) cerr << "check in" << endl;
     if(node_mem_range[0].second.size() != 1) {

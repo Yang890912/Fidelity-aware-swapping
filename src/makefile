@@ -34,6 +34,7 @@ clean:
 	rm -f Network/Graph/Graph.o Network/Graph/Graph.h.gch
 	rm -f Algorithm/MyAlgo2/MyAlgo2.o Algorithm/MyAlgo2/MyAlgo2.h.gch
 	rm -f config.o config.h.gch
+	rm -f a.out
 	find . -type f -name '*.o' -delete
 	find . -type f -name '*.h.gch' -delete
 	rm -f ../data/ans/*

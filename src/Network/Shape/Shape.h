@@ -19,6 +19,7 @@ class Shape {
     double Fswap(double Fa, double Fb);
     double t2F(double t);
     double F2t(double F);
+    double pass_tao(double F);
 public:
     Shape(Shape_vector _node_mem_range); 
     Shape();
