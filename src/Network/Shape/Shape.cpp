@@ -58,7 +58,6 @@ double Shape::pass_tao(double F) {
     return t2F(F2t(F) + tao);
 }
 void Shape::check_valid() {
-    if(DEBUG) cerr << "check in" << endl;
     if(node_mem_range[0].second.size() != 1) {
         cerr << "the usage of memory at src should be 1, but " << node_mem_range[0].second.size() << endl;
         exit(1);
@@ -86,7 +85,6 @@ void Shape::check_valid() {
     }
 
     recursion_check(0, node_mem_range.size() - 1);
-    if(DEBUG) cerr << "check end" << endl;
 }
 
 void Shape::recursion_check(int left, int right) {

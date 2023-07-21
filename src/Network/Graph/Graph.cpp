@@ -158,9 +158,38 @@ vector<int> Graph::get_path(int from, int to) {
     return path;
 }
 
+bool Graph::check_resource(Shape shape) {
+    Shape_vector nm = shape.get_node_mem_range();
+    for(int i = 0; i < (int)nm.size(); i++) {
+        int node = nm[i].first;
+        map<int, int> need_amount; // time to amount
+        for(pair<int, int> rng : nm[i].second) {
+            int left = rng.first, right = rng.second;
+            if(left < 0) {
+                cerr << "the reserve time is negtive" << endl;
+                exit(1);
+            }
+            if(right >= time_limit) {
+                cerr << "the reserve time is exceed the timelimit" << endl;
+                cerr << "timelimt = " << time_limit << " reserve time = " << right << endl;
+                exit(1);
+            }
+            for(int t = left; t <= right; t++) {
+                need_amount[t]++;
+            }
+        }
+        for(auto P : need_amount) {
+            int t = P.first, amount = P.second;
+            if(nodes[node].get_memory_at(t) < amount) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
 void Graph::reserve_shape(Shape shape) {
     shape.check_valid();
-    cerr << "checked" << endl;
+    // cerr << "checked" << endl;
     Shape_vector nm = shape.get_node_mem_range();
     for(int i = 0; i < (int)nm.size(); i++) {
         int node = nm[i].first;

@@ -18,46 +18,39 @@ pair<Shape, double> MyAlgo2::calculate_best_shape(int src, int dst) {
     par.resize(path.size());
     for(int i = 0; i < (int)path.size(); i++) {
         dp[i].resize(path.size());
-        caled[i].resize(path.size());
         par[i].resize(path.size());
+        caled[i].resize(path.size());
         for(int j = 0; j < (int)path.size(); j++) {
             dp[i][j].resize(time_limit);
-            caled[i][j].resize(time_limit);
             par[i][j].resize(time_limit);
+            caled[i][j].resize(time_limit);
             for(int t = 0; t < time_limit; t++) {
                 dp[i][j][t].resize(4, 0);
-                caled[i][j][t].resize(4, false);
                 par[i][j][t].resize(4, {-2, -2});
+                caled[i][j][t].resize(4, false);
             }
         }
     }
 
-    // cerr << "start cal " << src << " " << dst << endl;
-
     double best = EPS, best_time = -1;
     for(int t = 0; t < time_limit; t++) {
         double result = solve_fidelity(0, path.size() - 1, t, 0, path);
-        // cerr << "at " << t << " result = " << result << endl;
-        if(result <= EPS) continue;
         if(result > best) {
             best = result;
             best_time = t;
         }
     }
-    // cerr << "build shape" << endl;
-
-    // cerr << "best = " << best << endl;
 
     if(best_time == -1) return {{}, 0};
     Shape shape = Shape(backtracing_shape(0, path.size() - 1, best_time, 0, path));
     // shape.print();
     if(fabs(shape.get_fidelity(A, B, n, T, tao) - best) > EPS) {
         shape.print();
+        cerr << "[" << algorithm_name << "]" << endl;
         cerr << shape.get_fidelity(A, B, n, T, tao) << " " << best << endl;
         cerr << "the result diff is too much" << endl;
         exit(1);
     }
-    // cerr << shape.get_fidelity(A, B, n, T, tao) << " " << best << endl;
     return {shape, best};
 }
 
@@ -66,7 +59,6 @@ pair<Shape, double> MyAlgo2::calculate_best_shape(int src, int dst) {
 // state = 2, right limit
 // state = 3, left and right limit
 double MyAlgo2::solve_fidelity(int left, int right, int t, int state, vector<int> &path) {
-    // cerr << left << " " << right << " " << t << " " << state << endl;
     int left_id = path[left], right_id = path[right];
     int left_remain = graph.get_node_memory_at(left_id, t);
     int right_remain = graph.get_node_memory_at(right_id, t);
@@ -75,8 +67,8 @@ double MyAlgo2::solve_fidelity(int left, int right, int t, int state, vector<int
     if(state == 2 && (left_remain <= 0 || right_remain <= 1)) return 0;
     if(state == 3 && (left_remain <= 1 || right_remain <= 1)) return 0;
     
+    if(t <= 0) return 0;
     if(left == right - 1) {
-        if(t <= 0) return 0;
         int left_last_remain = graph.get_node_memory_at(left_id, t - 1);
         int right_last_remain = graph.get_node_memory_at(right_id, t - 1);
         if(state == 0 && (left_last_remain <= 0 || right_last_remain <= 0)) return 0;
@@ -86,7 +78,6 @@ double MyAlgo2::solve_fidelity(int left, int right, int t, int state, vector<int
         return pass_tao(1);
     }
 
-    if(t <= 0) return 0;
     if(caled[left][right][t][state]) return dp[left][right][t][state];
 
     double best = pass_tao(solve_fidelity(left, right, t - 1, state, path));
@@ -100,7 +91,6 @@ double MyAlgo2::solve_fidelity(int left, int right, int t, int state, vector<int
             double left_result = solve_fidelity(left, k, t - 1, l_state, path);
             double right_result = solve_fidelity(k, right, t - 1, r_state, path);
             double result = Fswap(pass_tao(left_result), pass_tao(right_result));
-            // cerr << "left right res = " << pass_tao(left_result) << " " << pass_tao(right_result) << " " << result << endl;
             if(result > best) {
                 best = result;
                 record = {k, s};
@@ -110,7 +100,6 @@ double MyAlgo2::solve_fidelity(int left, int right, int t, int state, vector<int
 
     caled[left][right][t][state] = true;
     par[left][right][t][state] = record;
-    // cerr << best << endl;
     return dp[left][right][t][state] = best;
 }
 
@@ -128,21 +117,18 @@ Shape_vector MyAlgo2::backtracing_shape(int left, int right, int t, int state, v
 
     if(k == -1 && s == -1) {
         Shape_vector last_time = backtracing_shape(left, right, t - 1, state, path);
-        assert(last_time.front().first == left_id);
-        assert(last_time.front().second[0].second == t - 1);
-        assert(last_time.back().first == right_id);
-        assert(last_time.back().second[0].second == t - 1);
+        if(DEBUG) {
+            assert(last_time.front().first == left_id);
+            assert(last_time.front().second[0].second == t - 1);
+            assert(last_time.back().first == right_id);
+            assert(last_time.back().second[0].second == t - 1);
+        }
         last_time.front().second[0].second++;
         last_time.back().second[0].second++;
         return last_time;
     }
 
-    if(k < 0 || s < 0) {
-        cerr << "backtracing error" << endl;
-        cerr << "left right t state = " << left << " " << right << " " << t << " " << state << endl; 
-        cerr << "k s = " << k << " " << s << endl;
-        exit(1);
-    }
+    assert(k >= 0 && s >= 0);
     Shape_vector left_result, right_result, result;
 
     int k_id = path[k];
@@ -151,14 +137,16 @@ Shape_vector MyAlgo2::backtracing_shape(int left, int right, int t, int state, v
     left_result = backtracing_shape(left, k, t - 1, left_state, path);
     right_result = backtracing_shape(k, right, t - 1, right_state, path);
 
-    assert(left_result.front().first == left_id);
-    assert(left_result.front().second[0].second == t - 1);
-    assert(left_result.front().second.size() == 1);
-    assert(left_result.back().first == k_id);
-    assert(right_result.front().first == k_id);
-    assert(right_result.back().first == right_id);
-    assert(right_result.back().second[0].second == t - 1);
-    assert(left_result.back().second.size() == 1);
+    if(DEBUG) {
+        assert(left_result.front().first == left_id);
+        assert(left_result.front().second[0].second == t - 1);
+        assert(left_result.front().second.size() == 1);
+        assert(left_result.back().first == k_id);
+        assert(right_result.front().first == k_id);
+        assert(right_result.back().first == right_id);
+        assert(right_result.back().second[0].second == t - 1);
+        assert(left_result.back().second.size() == 1);
+    }
 
     for(int i = 0; i < (int)left_result.size(); i++) {
         result.push_back(left_result[i]);
@@ -189,7 +177,6 @@ void MyAlgo2::run() {
             }
         }
 
-        cerr << "round finished" << endl;
         if(best_request == -1) break;
         graph.reserve_shape(best_shape);
         res["fidelity_gain"] = graph.get_fidelity_gain();

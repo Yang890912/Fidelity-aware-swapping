@@ -1,10 +1,10 @@
 dependency = Network/Node/Node.o Network/Shape/Shape.o Network/Graph/Graph.o Algorithm/AlgorithmBase/AlgorithmBase.o config.o
-gcc_flag = -g -Wall -Wextra -O3 --std=c++2a
+gcc_flag = -g -Wall -Wextra -O3 -Ofast --std=c++2a
 
 all: a.out
 
-a.out: main.cpp $(dependency) Algorithm/MyAlgo2/MyAlgo2.o
-	g++ -fopenmp $(gcc_flag) main.cpp $(dependency) Algorithm/MyAlgo2/MyAlgo2.o
+a.out: main.cpp $(dependency) Algorithm/MyAlgo2/MyAlgo2.o Algorithm/MyAlgo1/MyAlgo1.o
+	g++ -fopenmp $(gcc_flag) main.cpp $(dependency) Algorithm/MyAlgo2/MyAlgo2.o Algorithm/MyAlgo1/MyAlgo1.o
 
 Network/Node/Node.o: Network/Node/Node.cpp Network/Node/Node.h config.h
 	g++ -c $(gcc_flag) Network/Node/Node.cpp Network/Node/Node.h config.h
@@ -21,6 +21,10 @@ Network/Graph/Graph.o: Network/Graph/Graph.cpp Network/Graph/Graph.h config.h
 Algorithm/AlgorithmBase/AlgorithmBase.o: Algorithm/AlgorithmBase/AlgorithmBase.h Algorithm/AlgorithmBase/AlgorithmBase.cpp config.h
 	g++ -c $(gcc_flag) Algorithm/AlgorithmBase/AlgorithmBase.h Algorithm/AlgorithmBase/AlgorithmBase.cpp config.h
 	mv AlgorithmBase.o Algorithm/AlgorithmBase/AlgorithmBase.o
+
+Algorithm/MyAlgo1/MyAlgo1.o: Algorithm/MyAlgo1/MyAlgo1.h Algorithm/MyAlgo1/MyAlgo1.cpp config.h
+	g++ -c $(gcc_flag) Algorithm/MyAlgo1/MyAlgo1.h Algorithm/MyAlgo1/MyAlgo1.cpp config.h
+	mv MyAlgo1.o Algorithm/MyAlgo1/MyAlgo1.o
 
 Algorithm/MyAlgo2/MyAlgo2.o: Algorithm/MyAlgo2/MyAlgo2.h Algorithm/MyAlgo2/MyAlgo2.cpp config.h
 	g++ -c $(gcc_flag) Algorithm/MyAlgo2/MyAlgo2.h Algorithm/MyAlgo2/MyAlgo2.cpp config.h

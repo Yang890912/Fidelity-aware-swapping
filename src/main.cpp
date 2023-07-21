@@ -6,6 +6,7 @@
 #include <omp.h>
 #include "Network/Graph/Graph.h"
 #include "Algorithm/AlgorithmBase/AlgorithmBase.h"
+#include "Algorithm/MyAlgo1/MyAlgo1.h"
 #include "Algorithm/MyAlgo2/MyAlgo2.h"
 
 using namespace std;
@@ -31,13 +32,18 @@ int main(){
     for(int i = 0; i < request_cnt; i++) {
         requests.push_back(generate_new_request(num_nodes));
     }
-    MyAlgo2 myalgo2(graph, requests);
 
-    cerr << "constructor end" << endl;
-    myalgo2.run();
-    cerr << "run end" << endl;
 
-    for(auto P : myalgo2.get_res()) {
-        cout << P.first << " " << P.second << endl;
-    }    
+    vector<AlgorithmBase*> algorithms;
+    algorithms.emplace_back(new MyAlgo1(graph, requests));
+    algorithms.emplace_back(new MyAlgo2(graph, requests));
+
+    for(auto algo : algorithms) {
+        cout << "[" << algo->get_name() << "] start" << endl; 
+        algo->run();
+        for(auto P : algo->get_res()) {
+            cout << "[" << algo->get_name() << "] " << P.first << " " << P.second << endl;
+        }
+        cout << "[" << algo->get_name() << "] end" << endl; 
+    }
 }

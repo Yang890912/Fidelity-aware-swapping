@@ -6,7 +6,6 @@ Node::Node(int id, int memory, int time_limit): id(id), memory(memory), time_lim
 }
 
 Node::~Node() {
-    if(DEBUG) cerr << "Delete Node " << id << endl;
 }
 int Node::get_id() {
     return id;

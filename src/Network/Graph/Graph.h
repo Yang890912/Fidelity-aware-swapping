@@ -42,6 +42,7 @@ public:
     double get_T();
     double get_tao();
     double get_fidelity_gain();
+    bool check_resource(Shape shape);
     void reserve_shape(Shape shape);
     vector<int> get_path(int from, int to);
 };
