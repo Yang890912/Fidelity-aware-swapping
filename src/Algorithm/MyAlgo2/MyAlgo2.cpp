@@ -179,7 +179,7 @@ void MyAlgo2::run() {
         int src = len_requests[i].second.first;
         int dst = len_requests[i].second.second;
         Shape shape = calculate_best_shape(src, dst).first;
-        if(graph.check_resource(shape)) {
+        if(!shape.get_node_mem_range().empty() && graph.check_resource(shape)) {
             graph.reserve_shape(shape);
             res["fidelity_gain"] = graph.get_fidelity_gain();
             res["succ_request_cnt"] = graph.get_succ_request_cnt();
