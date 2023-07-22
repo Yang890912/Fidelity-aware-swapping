@@ -237,7 +237,7 @@ void MyAlgo5::run() {
         max_xim_sum = max(max_xim_sum, xim_sum);
     }
 
-    res["succ_request_cnt"] =/ max_xim_sum;
+    res["succ_request_cnt"] /= max_xim_sum;
     res["fidelity_gain"] /= max_xim_sum;
 
     cerr << "[" << algorithm_name << "] end" << endl;
