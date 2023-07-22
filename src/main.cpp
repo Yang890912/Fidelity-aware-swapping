@@ -70,8 +70,6 @@ int main(){
             int request_cnt = input_parameter["request_cnt"];
             int time_limit = input_parameter["time_limit"];
 
-            // python generate graph
-
             #pragma omp parallel for
             for(int r = 0; r < round; r++){
                 string round_str = to_string(r);
@@ -114,6 +112,8 @@ int main(){
                 for(int i = 0; i < (int)algorithms.size(); i++) {
                     algorithms[i]->run();
                 }
+
+
                 for(int i = 0; i < (int)algorithms.size(); i++) {
                     for(string Y_name : Y_names) {
                         result[r][algorithms[i]->get_name()][Y_name] = algorithms[i]->get_res(Y_name);
