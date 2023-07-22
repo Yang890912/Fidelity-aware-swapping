@@ -9,7 +9,7 @@ MyAlgo5::MyAlgo5(Graph graph, vector<pair<int, int>> requests):
     // alpha(i) = delta 
     // beta(v, t) = delta / C(v)
 
-    epsilon = (0.5);
+    epsilon = (0.1);
     double m = requests.size() + (double)graph.get_num_nodes() * (double)graph.get_time_limit();
     double delta = (1 + epsilon) * (1.0 / pow((1 + epsilon) * m, 1.0 / epsilon));
     obj = m * delta;
