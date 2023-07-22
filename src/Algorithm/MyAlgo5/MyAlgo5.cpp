@@ -231,7 +231,7 @@ void MyAlgo5::run() {
         double xim_sum = 0;
         for(auto P : x[i]) {
             xim_sum += P.second;
-            res["fidelity_gain"] += Shape(P.first).get_fidelity(A, B, n, T, tao);
+            res["fidelity_gain"] += P.second * Shape(P.first).get_fidelity(A, B, n, T, tao);
             res["succ_request_cnt"] += P.second;
         }
         max_xim_sum = max(max_xim_sum, xim_sum);
