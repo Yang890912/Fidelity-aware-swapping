@@ -31,13 +31,13 @@ int main(){
 
     map<string, double> default_setting;
     default_setting["num_nodes"] = 100;
-    default_setting["request_cnt"] = 10;
+    default_setting["request_cnt"] = 20;
     default_setting["time_limit"] = 10;
     default_setting["avg_memory"] = 6;
 
     map<string, vector<double>> change_parameter;
     // change_parameter["request_cnt"] = {5, 15, 25, 35, 45};
-    change_parameter["request_cnt"] = {1, 2, 3, 4, 5};
+    change_parameter["request_cnt"] = {10, 20, 30, 40, 50};
     change_parameter["num_nodes"] = {50, 100, 125, 150, 200};
     change_parameter["time_limit"] = {5, 10, 15, 20, 25};
     change_parameter["avg_memory"] = {4, 6, 8, 10, 12};
