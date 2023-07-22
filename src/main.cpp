@@ -109,15 +109,14 @@ int main(){
 
 
                 #pragma omp parallel for
-                for(AlgorithmBase* &algo : algorithms) {
-                    algo->run();
+                for(int i = 0; i < (int)algorithms.size(); i++) {
+                    algorithms[i]->run();
                 }
-                
-                for(auto &algo : algorithms){
+                for(int i = 0; i < (int)algorithms.size(); i++) {
                     for(string Y_name : Y_names) {
-                        result[r][algo->get_name()][Y_name] = algo->get_res(Y_name);
+                        result[r][algorithms[i]->get_name()][Y_name] = algorithms[i]->get_res(Y_name);
                     }
-                }
+                }                
 
                 now = time(0);
                 dt = ctime(&now);
