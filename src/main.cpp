@@ -109,7 +109,7 @@ int main(){
 
 
                 #pragma omp parallel for
-                for(auto &algo : algorithms) {
+                for(AlgorithmBase* &algo : algorithms) {
                     algo->run();
                 }
                 
