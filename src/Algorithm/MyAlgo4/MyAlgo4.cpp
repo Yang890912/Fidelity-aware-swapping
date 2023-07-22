@@ -40,6 +40,7 @@ pair<Shape, double> MyAlgo4::calculate_best_shape(int src, int dst) {
         if(result > BOUND) {
             best_time = t;
             best = result;
+            break;
         }
     }
 
