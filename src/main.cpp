@@ -88,7 +88,7 @@ int main(){
                 //     cerr<<"error:\tsystem proccess python error"<<endl;
                 //     exit(1);
                 // }
-                double A = 0.25, B = 0.75, tao = 1, T = 10, n = 2;
+                double A = 0.25, B = 0.75, tao = 0.2, T = 10, n = 2;
                 Graph graph(num_nodes, time_limit, memory_lb, memory_up, A, B, n, T, tao);
                 
                 ofs << "---------------in round " << r << " -------------" <<endl;

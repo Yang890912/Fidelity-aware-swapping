@@ -34,7 +34,7 @@ pair<Shape, double> MyAlgo2::calculate_best_shape(int src, int dst) {
 
     double best = EPS;
     int best_time = -1;
-    for(int t = 0; t < time_limit; t++) {
+    for(int t = time_limit- 1; t >= 0; t--) {
         double result = solve_fidelity(0, path.size() - 1, t, 0, path);
         if(result > best) {
             best = result;
@@ -165,24 +165,25 @@ Shape_vector MyAlgo2::backtracing_shape(int left, int right, int t, int state, v
 }
 
 void MyAlgo2::run() {
-    while(!requests.empty()) {
-        int best_request = -1;
-        double best = EPS;
-        Shape best_shape;
-        for(int i = 0; i < (int)requests.size(); i++) {
-            pair<Shape, double> result = calculate_best_shape(requests[i].first, requests[i].second);
-            if(best < result.second) {
-                best = result.second;
-                best_shape = result.first;
-                best_request = i;
-            }
-        }
 
-        if(best_request == -1) break;
-        graph.reserve_shape(best_shape);
-        res["fidelity_gain"] = graph.get_fidelity_gain();
-        res["succ_request_cnt"] = graph.get_succ_request_cnt();
-        requests.erase(requests.begin() + best_request);
+    vector<pair<int, pair<int, int>>> len_requests(requests.size());
+    
+    for(int i = 0; i < (int)requests.size(); i++) {
+        int length = graph.get_path(requests[i].first, requests[i].second).size();
+        len_requests[i] = {length, requests[i]};
+    }
+
+    sort(len_requests.begin(), len_requests.end());
+
+    for(int i = 0; i < (int)len_requests.size(); i++) {
+        int src = len_requests[i].second.first;
+        int dst = len_requests[i].second.second;
+        Shape shape = calculate_best_shape(src, dst).first;
+        if(graph.check_resource(shape)) {
+            graph.reserve_shape(shape);
+            res["fidelity_gain"] = graph.get_fidelity_gain();
+            res["succ_request_cnt"] = graph.get_succ_request_cnt();
+        }
     }
 
     cerr << "[" << algorithm_name << "] end" << endl;

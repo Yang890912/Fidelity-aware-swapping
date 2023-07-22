@@ -33,12 +33,11 @@ pair<Shape, double> MyAlgo4::calculate_best_shape(int src, int dst) {
     }
 
     double best = 0;
-    int best_time = -1, best_len = graph.get_num_nodes();
+    int best_time = -1;
     double BOUND = 0.3;
     for(int t = time_limit - 1; t >= 0; t--) {
         double result = solve_fidelity(0, path.size() - 1, t, 0, path);
-        if(result > BOUND && best_len > (int)path.size()) {
-            best_len = path.size();
+        if(result > BOUND) {
             best_time = t;
             best = result;
         }
