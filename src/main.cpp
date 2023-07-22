@@ -45,7 +45,7 @@ int main(){
 
     vector<string> X_names = {"num_nodes", "request_cnt", "time_limit", "avg_memory"};
     vector<string> Y_names = {"fidelity_gain", "succ_request_cnt"};
-    vector<string> algo_names = {"MyAlgo1", "MyAlgo2", "MyAlgo3", "MyAlgo4"};
+    vector<string> algo_names = {"MyAlgo1", "MyAlgo2", "MyAlgo3", "MyAlgo4", "MyAlgo5"};
     // init result
     for(string X_name : X_names) {
         for(string Y_name : Y_names){
