@@ -1,5 +1,8 @@
 *.o
-*.out
 *.gch
+*.out
+*.vscode
 *.txt
 *.log
+*.ans
+*.input
