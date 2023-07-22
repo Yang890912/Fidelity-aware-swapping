@@ -1,5 +1,5 @@
 dependency = Network/Node/Node.o Network/Shape/Shape.o Network/Graph/Graph.o Algorithm/AlgorithmBase/AlgorithmBase.o config.o
-algorithm = Algorithm/MyAlgo2/MyAlgo2.o Algorithm/MyAlgo1/MyAlgo1.o Algorithm/MyAlgo3/MyAlgo3.o Algorithm/MyAlgo4/MyAlgo4.o
+algorithm = Algorithm/MyAlgo2/MyAlgo2.o Algorithm/MyAlgo1/MyAlgo1.o Algorithm/MyAlgo3/MyAlgo3.o Algorithm/MyAlgo4/MyAlgo4.o Algorithm/MyAlgo5/MyAlgo5.o
 gcc_flag = -g -Wall -Wextra -O3 -Ofast --std=c++17
 
 all: a.out
@@ -38,6 +38,10 @@ Algorithm/MyAlgo3/MyAlgo3.o: Algorithm/MyAlgo3/MyAlgo3.h Algorithm/MyAlgo3/MyAlg
 Algorithm/MyAlgo4/MyAlgo4.o: Algorithm/MyAlgo4/MyAlgo4.h Algorithm/MyAlgo4/MyAlgo4.cpp config.h
 	g++ -c $(gcc_flag) Algorithm/MyAlgo4/MyAlgo4.h Algorithm/MyAlgo4/MyAlgo4.cpp config.h
 	mv MyAlgo4.o Algorithm/MyAlgo4/MyAlgo4.o
+
+Algorithm/MyAlgo5/MyAlgo5.o: Algorithm/MyAlgo5/MyAlgo5.h Algorithm/MyAlgo5/MyAlgo5.cpp config.h
+	g++ -c $(gcc_flag) Algorithm/MyAlgo5/MyAlgo5.h Algorithm/MyAlgo5/MyAlgo5.cpp config.h
+	mv MyAlgo5.o Algorithm/MyAlgo5/MyAlgo5.o
 
 config.o:	config.h config.cpp
 	g++ -c $(gcc_flag) config.h config.cpp

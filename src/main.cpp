@@ -11,6 +11,7 @@
 #include "Algorithm/MyAlgo2/MyAlgo2.h"
 #include "Algorithm/MyAlgo3/MyAlgo3.h"
 #include "Algorithm/MyAlgo4/MyAlgo4.h"
+#include "Algorithm/MyAlgo5/MyAlgo5.h"
 
 using namespace std;
 
@@ -89,7 +90,7 @@ int main(){
                 //     cerr<<"error:\tsystem proccess python error"<<endl;
                 //     exit(1);
                 // }
-                double A = 0.25, B = 0.75, tao = 0.2, T = 10, n = 2;
+                double A = 0.25, B = 0.75, tao = 1, T = 10, n = 2;
                 Graph graph(num_nodes, time_limit, memory_lb, memory_up, A, B, n, T, tao);
                 
                 ofs << "---------------in round " << r << " -------------" <<endl;
@@ -106,6 +107,7 @@ int main(){
                 algorithms.emplace_back(new MyAlgo2(graph, requests));
                 algorithms.emplace_back(new MyAlgo3(graph, requests));
                 algorithms.emplace_back(new MyAlgo4(graph, requests));
+                algorithms.emplace_back(new MyAlgo5(graph, requests));
 
 
                 #pragma omp parallel for
@@ -120,7 +122,7 @@ int main(){
 
                 now = time(0);
                 dt = ctime(&now);
-                cerr << "時間 " << dt << endl << endl; 
+                cerr << "時間 " << dt << endl << endl;
                 ofs << "時間 " << dt << endl << endl; 
                 ofs.close();
             
