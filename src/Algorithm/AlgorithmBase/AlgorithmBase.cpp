@@ -21,6 +21,10 @@ map<string, double> AlgorithmBase::get_res() {
     return res;
 }
 
+double AlgorithmBase::get_res(string str) {
+    return res[str];
+}
+
 double AlgorithmBase::bar(double F) {
     return (1.0 - F);
 }

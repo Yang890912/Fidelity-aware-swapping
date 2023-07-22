@@ -1,13 +1,13 @@
-#include "MyAlgo2.h"
+#include "MyAlgo4.h"
 
-MyAlgo2::MyAlgo2(Graph graph, vector<pair<int, int>> requests):
+MyAlgo4::MyAlgo4(Graph graph, vector<pair<int, int>> requests):
     AlgorithmBase(graph, requests) {
-    algorithm_name = "MyAlgo2";
+    algorithm_name = "MyAlgo4";
 }
 
 
 
-pair<Shape, double> MyAlgo2::calculate_best_shape(int src, int dst) {
+pair<Shape, double> MyAlgo4::calculate_best_shape(int src, int dst) {
     // cerr << "cal " << src << " " << dst << endl;
     vector<int> path = graph.get_path(src, dst);
     dp.clear();
@@ -32,13 +32,15 @@ pair<Shape, double> MyAlgo2::calculate_best_shape(int src, int dst) {
         }
     }
 
-    double best = EPS;
-    int best_time = -1;
-    for(int t = 0; t < time_limit; t++) {
+    double best = 0;
+    int best_time = -1, best_len = graph.get_num_nodes();
+    double BOUND = 0.3;
+    for(int t = time_limit - 1; t >= 0; t--) {
         double result = solve_fidelity(0, path.size() - 1, t, 0, path);
-        if(result > best) {
-            best = result;
+        if(result > BOUND && best_len > (int)path.size()) {
+            best_len = path.size();
             best_time = t;
+            best = result;
         }
     }
 
@@ -59,7 +61,7 @@ pair<Shape, double> MyAlgo2::calculate_best_shape(int src, int dst) {
 // state = 1, left limit
 // state = 2, right limit
 // state = 3, left and right limit
-double MyAlgo2::solve_fidelity(int left, int right, int t, int state, vector<int> &path) {
+double MyAlgo4::solve_fidelity(int left, int right, int t, int state, vector<int> &path) {
     int left_id = path[left], right_id = path[right];
     int left_remain = graph.get_node_memory_at(left_id, t);
     int right_remain = graph.get_node_memory_at(right_id, t);
@@ -104,7 +106,7 @@ double MyAlgo2::solve_fidelity(int left, int right, int t, int state, vector<int
     return dp[left][right][t][state] = best;
 }
 
-Shape_vector MyAlgo2::backtracing_shape(int left, int right, int t, int state, vector<int> &path) {
+Shape_vector MyAlgo4::backtracing_shape(int left, int right, int t, int state, vector<int> &path) {
     int k = par[left][right][t][state].first;
     int s = par[left][right][t][state].second;
     int left_id = path[left], right_id = path[right];
@@ -164,7 +166,7 @@ Shape_vector MyAlgo2::backtracing_shape(int left, int right, int t, int state, v
     return result;
 }
 
-void MyAlgo2::run() {
+void MyAlgo4::run() {
     while(!requests.empty()) {
         int best_request = -1;
         double best = EPS;

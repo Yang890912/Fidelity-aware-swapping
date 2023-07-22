@@ -26,6 +26,7 @@ protected:
 public:
     AlgorithmBase(Graph graph, vector<pair<int, int>> requests);
     map<string, double> get_res();
+    double get_res(string str);
     string get_name();
     virtual ~AlgorithmBase();
     virtual void run() = 0;

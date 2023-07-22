@@ -172,7 +172,7 @@ void MyAlgo1::run() {
 
     while(obj < 1.0) {
         Shape_vector shape = separation_oracle();
-        assert(!shape.empty());
+        if(shape.empty()) break;
         double q = 1;
         for(int i = 0; i < (int)shape.size(); i++) {
             map<int, int> need_amount; // time to amount
@@ -261,4 +261,5 @@ void MyAlgo1::run() {
 
     res["fidelity_gain"] = graph.get_fidelity_gain();
     res["succ_request_cnt"] = graph.get_succ_request_cnt();
+    cerr << "[" << algorithm_name << "] end" << endl;
 }

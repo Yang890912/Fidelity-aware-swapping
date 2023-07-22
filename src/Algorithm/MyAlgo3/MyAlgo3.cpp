@@ -1,13 +1,13 @@
-#include "MyAlgo2.h"
+#include "MyAlgo3.h"
 
-MyAlgo2::MyAlgo2(Graph graph, vector<pair<int, int>> requests):
+MyAlgo3::MyAlgo3(Graph graph, vector<pair<int, int>> requests):
     AlgorithmBase(graph, requests) {
-    algorithm_name = "MyAlgo2";
+    algorithm_name = "MyAlgo3";
 }
 
 
 
-pair<Shape, double> MyAlgo2::calculate_best_shape(int src, int dst) {
+pair<Shape, double> MyAlgo3::calculate_best_shape(int src, int dst) {
     // cerr << "cal " << src << " " << dst << endl;
     vector<int> path = graph.get_path(src, dst);
     dp.clear();
@@ -34,7 +34,7 @@ pair<Shape, double> MyAlgo2::calculate_best_shape(int src, int dst) {
 
     double best = EPS;
     int best_time = -1;
-    for(int t = 0; t < time_limit; t++) {
+    for(int t = time_limit - 1; t >= 0; t--) {
         double result = solve_fidelity(0, path.size() - 1, t, 0, path);
         if(result > best) {
             best = result;
@@ -59,7 +59,7 @@ pair<Shape, double> MyAlgo2::calculate_best_shape(int src, int dst) {
 // state = 1, left limit
 // state = 2, right limit
 // state = 3, left and right limit
-double MyAlgo2::solve_fidelity(int left, int right, int t, int state, vector<int> &path) {
+double MyAlgo3::solve_fidelity(int left, int right, int t, int state, vector<int> &path) {
     int left_id = path[left], right_id = path[right];
     int left_remain = graph.get_node_memory_at(left_id, t);
     int right_remain = graph.get_node_memory_at(right_id, t);
@@ -104,7 +104,7 @@ double MyAlgo2::solve_fidelity(int left, int right, int t, int state, vector<int
     return dp[left][right][t][state] = best;
 }
 
-Shape_vector MyAlgo2::backtracing_shape(int left, int right, int t, int state, vector<int> &path) {
+Shape_vector MyAlgo3::backtracing_shape(int left, int right, int t, int state, vector<int> &path) {
     int k = par[left][right][t][state].first;
     int s = par[left][right][t][state].second;
     int left_id = path[left], right_id = path[right];
@@ -164,7 +164,7 @@ Shape_vector MyAlgo2::backtracing_shape(int left, int right, int t, int state, v
     return result;
 }
 
-void MyAlgo2::run() {
+void MyAlgo3::run() {
     while(!requests.empty()) {
         int best_request = -1;
         double best = EPS;
