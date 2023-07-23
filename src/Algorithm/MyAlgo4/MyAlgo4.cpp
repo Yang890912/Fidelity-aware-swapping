@@ -88,11 +88,6 @@ void MyAlgo4::run() {
                 }
             }
 
-            if(isable) {
-                find = true;
-                break;
-            }
-
             bool cant = false;
             for(int i = 0; i < (int)shape.size(); i++) {
                 for(int j = 0; j < (int)shape[i].second.size(); j++) {
@@ -106,6 +101,11 @@ void MyAlgo4::run() {
             }
 
             if(cant) break;
+
+            if(isable) {
+                find = true;
+                break;
+            }
         }
 
         if(find) {
