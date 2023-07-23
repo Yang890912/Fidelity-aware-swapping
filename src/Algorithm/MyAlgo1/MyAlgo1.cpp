@@ -27,7 +27,8 @@ void MyAlgo1::variable_initialize() {
 
     for(int i = 0; i < graph.get_num_nodes(); i++) {
         for(int t = 0; t < graph.get_time_limit(); t++) {
-            beta[i][t] = delta / graph.get_node_memory_at(i, t);
+            if(graph.get_node_memory_at(i, t) == 0) beta[i][t] = INF;
+            else beta[i][t] = delta / graph.get_node_memory_at(i, t);
         }
     }
 }
@@ -180,6 +181,7 @@ void MyAlgo1::run() {
     while(round--) {
         variable_initialize();
         while(obj < 1.0) {
+            // cerr << "obj = " << obj << endl;
             Shape_vector shape = separation_oracle();
             if(shape.empty()) break;
             double q = 1;
@@ -199,6 +201,7 @@ void MyAlgo1::run() {
                 }
             }
 
+            if(q <= 1e-10) break;
 
             int request_index = -1;
             for(int i = 0; i < (int)requests.size(); i++) {
