@@ -35,6 +35,7 @@ int main(){
     default_setting["request_cnt"] = 20;
     default_setting["time_limit"] = 10;
     default_setting["avg_memory"] = 6;
+    default_setting["tao"] = 0.2;
 
     map<string, vector<double>> change_parameter;
     // change_parameter["request_cnt"] = {5, 15, 25, 35, 45};
@@ -42,8 +43,10 @@ int main(){
     change_parameter["num_nodes"] = {50, 100, 125, 150, 200};
     change_parameter["time_limit"] = {5, 10, 15, 20, 25};
     change_parameter["avg_memory"] = {4, 6, 8, 10, 12};
+    change_parameter["tao"] = {0.1, 0.2, 0.3, 0.4, 0.5};
 
-    vector<string> X_names = {"num_nodes", "request_cnt", "time_limit", "avg_memory"};
+
+    vector<string> X_names = {"num_nodes", "request_cnt", "time_limit", "avg_memory", "tao"};
     vector<string> Y_names = {"fidelity_gain", "succ_request_cnt"};
     vector<string> algo_names = {"MyAlgo1", "MyAlgo2", "MyAlgo3", "MyAlgo4", "MyAlgo5"};
     // init result
@@ -88,7 +91,7 @@ int main(){
                 //     cerr<<"error:\tsystem proccess python error"<<endl;
                 //     exit(1);
                 // }
-                double A = 0.25, B = 0.75, tao = 0.2, T = 10, n = 2;
+                double A = 0.25, B = 0.75, tao = input_parameter["tao"], T = 10, n = 2;
                 Graph graph(num_nodes, time_limit, memory_lb, memory_up, A, B, n, T, tao);
                 
                 ofs << "---------------in round " << r << " -------------" <<endl;
