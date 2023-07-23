@@ -11,17 +11,9 @@
 using namespace std;
 
 class MyAlgo5 : public AlgorithmBase {
-    vector<double> alpha;
-    vector<vector<double>> beta;
-    vector<map<Shape_vector, double>> x;
-    vector<vector<vector<double>>> dp;
-    vector<vector<vector<bool>>> caled;
-    vector<vector<vector<int>>> par;
-    double epsilon, obj;
-    Shape_vector separation_oracle();
-    pair<Shape_vector, double> find_min_shape(int src, int dst);
-    double recursion_calculate_min_shape(int left, int right, int t, vector<int> &path);
-    Shape_vector recursion_find_shape(int left, int right, int t, vector<int> &path);
+    vector<vector<vector<pair<int, int>>>> linear_shape;
+    vector<vector<pair<int, int>>> recursion_build(int length);
+    Shape_vector build_linear_shape(vector<int> path);
 public:
     MyAlgo5(Graph graph, vector<pair<int, int>> requests);
     void run();

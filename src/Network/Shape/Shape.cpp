@@ -80,6 +80,8 @@ void Shape::check_valid() {
             cerr << "two range should finish same time (after swap)" << endl;
             exit(1);
         }
+        assert(memory_range[0].first >= 0);
+        assert(memory_range[1].first >= 0);
         assert(memory_range[0].first <= memory_range[0].second);
         assert(memory_range[1].first <= memory_range[1].second);
     }

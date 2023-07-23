@@ -3,121 +3,118 @@
 MyAlgo2::MyAlgo2(Graph graph, vector<pair<int, int>> requests):
     AlgorithmBase(graph, requests) {
     algorithm_name = "MyAlgo2";
+    // m = i + vt
+    // x(i, m) = 0
+    // delta = (1 + eps)((1 + eps)m)^(-1/eps)
+    // alpha(i) = delta 
+    // beta(v, t) = delta / C(v)
+
+    epsilon = (0.2);
+    double m = requests.size() + (double)graph.get_num_nodes() * (double)graph.get_time_limit();
+    double delta = (1 + epsilon) * (1.0 / pow((1 + epsilon) * m, 1.0 / epsilon));
+    obj = m * delta;
+    cerr << "[MyAlgo5] delta = " << delta << endl;
+    x.resize(requests.size());
+    alpha.resize(requests.size(), delta);
+    beta.resize(graph.get_num_nodes(), vector<double>(graph.get_time_limit()));
+
+    for(int i = 0; i < graph.get_num_nodes(); i++) {
+        for(int t = 0; t < graph.get_time_limit(); t++) {
+            beta[i][t] = delta / graph.get_node_memory_at(i, t);
+        }
+    }
 }
 
 
-
-pair<Shape, double> MyAlgo2::calculate_best_shape(int src, int dst) {
-    // cerr << "cal " << src << " " << dst << endl;
+Shape_vector MyAlgo2::separation_oracle() {
+    Shape_vector min_shape;
+    double min_value = INF;
+    for(int i = 0; i < (int)requests.size(); i++) {
+        int src = requests[i].first, dst = requests[i].second;
+        // cerr << "[MyAlgo1] " << "path len = " << graph.get_path(src, dst).size() << endl;
+        auto result = find_min_shape(src, dst);
+        Shape_vector shape = result.first;
+        double value = result.second + alpha[i];
+        if(value < min_value) {
+            min_shape = shape;
+            min_value = value;
+        }
+        // cerr << "[MyAlgo1] " << "find shape" << endl;
+    }
+    return min_shape;
+}
+pair<Shape_vector, double> MyAlgo2::find_min_shape(int src, int dst) {
     vector<int> path = graph.get_path(src, dst);
+    
     dp.clear();
     dp.resize(path.size());
-    caled.clear();
-    caled.resize(path.size());
     par.clear();
     par.resize(path.size());
+    caled.clear();
+    caled.resize(path.size());
     for(int i = 0; i < (int)path.size(); i++) {
         dp[i].resize(path.size());
         par[i].resize(path.size());
         caled[i].resize(path.size());
         for(int j = 0; j < (int)path.size(); j++) {
             dp[i][j].resize(time_limit);
-            par[i][j].resize(time_limit);
-            caled[i][j].resize(time_limit);
-            for(int t = 0; t < time_limit; t++) {
-                dp[i][j][t].resize(4, 0);
-                par[i][j][t].resize(4, {-2, -2});
-                caled[i][j][t].resize(4, false);
-            }
+            par[i][j].resize(time_limit, -2);
+            caled[i][j].resize(time_limit, false);
         }
     }
 
-    double best = EPS;
+    double best = INF;
     int best_time = -1;
-    for(int t = time_limit- 1; t >= 0; t--) {
-        double result = solve_fidelity(0, path.size() - 1, t, 0, path);
-        if(result > best) {
+    for(int t = 0; t < time_limit; t++) {
+        double result = recursion_calculate_min_shape(0, path.size() - 1, t, path);
+        if(best > result) {
             best = result;
             best_time = t;
         }
     }
 
-    if(best_time == -1) return {{}, 0};
-    Shape shape = Shape(backtracing_shape(0, path.size() - 1, best_time, 0, path));
-    // shape.print();
-    if(fabs(shape.get_fidelity(A, B, n, T, tao) - best) > EPS) {
-        shape.print();
-        cerr << "[" << algorithm_name << "]" << endl;
-        cerr << shape.get_fidelity(A, B, n, T, tao) << " " << best << endl;
-        cerr << "the result diff is too much" << endl;
-        exit(1);
-    }
-    return {shape, best};
+    if(best_time == -1) return {{}, INF};
+
+    return {recursion_find_shape(0, (int)path.size() - 1, best_time, path), best};
 }
+double MyAlgo2::recursion_calculate_min_shape(int left, int right, int t, vector<int> &path) {
+    if(t <= 0) return INF;
+    // cerr << left << " " << right << " " << t << " " << (int)path.size() << endl;
 
-// state = 0, left right no limit
-// state = 1, left limit
-// state = 2, right limit
-// state = 3, left and right limit
-double MyAlgo2::solve_fidelity(int left, int right, int t, int state, vector<int> &path) {
     int left_id = path[left], right_id = path[right];
-    int left_remain = graph.get_node_memory_at(left_id, t);
-    int right_remain = graph.get_node_memory_at(right_id, t);
-    if(state == 0 && (left_remain <= 0 || right_remain <= 0)) return 0;
-    if(state == 1 && (left_remain <= 1 || right_remain <= 0)) return 0;
-    if(state == 2 && (left_remain <= 0 || right_remain <= 1)) return 0;
-    if(state == 3 && (left_remain <= 1 || right_remain <= 1)) return 0;
-    
-    if(t <= 0) return 0;
     if(left == right - 1) {
-        int left_last_remain = graph.get_node_memory_at(left_id, t - 1);
-        int right_last_remain = graph.get_node_memory_at(right_id, t - 1);
-        if(state == 0 && (left_last_remain <= 0 || right_last_remain <= 0)) return 0;
-        if(state == 1 && (left_last_remain <= 1 || right_last_remain <= 0)) return 0;
-        if(state == 2 && (left_last_remain <= 0 || right_last_remain <= 1)) return 0;
-        if(state == 3 && (left_last_remain <= 1 || right_last_remain <= 1)) return 0;
-        return pass_tao(1);
+        return beta[left_id][t - 1] + beta[left_id][t] + beta[right_id][t - 1] + beta[right_id][t];
     }
 
-    if(caled[left][right][t][state]) return dp[left][right][t][state];
-
-    double best = pass_tao(solve_fidelity(left, right, t - 1, state, path));
-    pair<int, int> record = {-1, -1};
-
+    if(caled[left][right][t]) return dp[left][right][t];
+    
+    double best = recursion_calculate_min_shape(left, right, t - 1, path);
+    int best_k = -1;
     for(int k = left + 1; k < right; k++) {
-        for(int s = 1; s <= 2; s++) {
-            int l_state = (state & 1) | ((s & 1) << 1);
-            int r_state = (state & 2) | ((s & 2) >> 1);
-
-            double left_result = solve_fidelity(left, k, t - 1, l_state, path);
-            double right_result = solve_fidelity(k, right, t - 1, r_state, path);
-            double result = Fswap(pass_tao(left_result), pass_tao(right_result));
-            if(result > best) {
-                best = result;
-                record = {k, s};
-            }
+        double left_result = recursion_calculate_min_shape(left, k, t - 1, path);
+        double right_result = recursion_calculate_min_shape(k, right, t - 1, path);
+        double result = left_result + right_result;
+        if(result < best) {
+            best = result;
+            best_k = k;
         }
     }
 
-    caled[left][right][t][state] = true;
-    par[left][right][t][state] = record;
-    return dp[left][right][t][state] = best;
+    caled[left][right][t] = true;
+    par[left][right][t] = best_k;
+    return dp[left][right][t] = best + beta[left_id][t] + beta[right_id][t];
 }
-
-Shape_vector MyAlgo2::backtracing_shape(int left, int right, int t, int state, vector<int> &path) {
-    int k = par[left][right][t][state].first;
-    int s = par[left][right][t][state].second;
-    int left_id = path[left], right_id = path[right];
-    if(left == right - 1 && k == -2 && s == -2) {
+Shape_vector MyAlgo2::recursion_find_shape(int left, int right, int t, vector<int> &path) {
+    int left_id = path[left], right_id = path[right], k = par[left][right][t];
+    if(left == right - 1 && k == -2) {
         Shape_vector result;
         result.push_back({left_id, {{t - 1, t}}});
         result.push_back({right_id, {{t - 1, t}}});
-        return result;
+        return result;    
     }
 
-
-    if(k == -1 && s == -1) {
-        Shape_vector last_time = backtracing_shape(left, right, t - 1, state, path);
+    if(k == -1) {
+        Shape_vector last_time = recursion_find_shape(left, right, t - 1, path);
         if(DEBUG) {
             assert(last_time.front().first == left_id);
             assert(last_time.front().second[0].second == t - 1);
@@ -129,14 +126,12 @@ Shape_vector MyAlgo2::backtracing_shape(int left, int right, int t, int state, v
         return last_time;
     }
 
-    assert(k >= 0 && s >= 0);
+    assert(k >= 0);
     Shape_vector left_result, right_result, result;
 
     int k_id = path[k];
-    int left_state = (state & 1) | ((s & 1) << 1);
-    int right_state = (state & 2) | ((s & 2) >> 1);
-    left_result = backtracing_shape(left, k, t - 1, left_state, path);
-    right_result = backtracing_shape(k, right, t - 1, right_state, path);
+    left_result = recursion_find_shape(left, k, t - 1, path);
+    right_result = recursion_find_shape(k, right, t - 1, path);
 
     if(DEBUG) {
         assert(left_result.front().first == left_id);
@@ -166,25 +161,84 @@ Shape_vector MyAlgo2::backtracing_shape(int left, int right, int t, int state, v
 
 void MyAlgo2::run() {
 
-    vector<pair<int, pair<int, int>>> len_requests(requests.size());
-    
-    for(int i = 0; i < (int)requests.size(); i++) {
-        int length = graph.get_path(requests[i].first, requests[i].second).size();
-        len_requests[i] = {length, requests[i]};
-    }
+    // q = min (1, C(v) / theta(v, t)) for all v, t
 
-    sort(len_requests.begin(), len_requests.end());
+    // primal:
+    // x(i, m) = x(i, m) + q
 
-    for(int i = 0; i < (int)len_requests.size(); i++) {
-        int src = len_requests[i].second.first;
-        int dst = len_requests[i].second.second;
-        Shape shape = calculate_best_shape(src, dst).first;
-        if(!shape.get_node_mem_range().empty() && graph.check_resource(shape)) {
-            graph.reserve_shape(shape);
-            res["fidelity_gain"] = graph.get_fidelity_gain();
-            res["succ_request_cnt"] = graph.get_succ_request_cnt();
+    // dual:
+    // alpha(v) = alpha(v)(1 + eps(q / ahpla(v))
+    // beta(v, t) = beta(v, t)(1 + eps(q / beta(v, t))
+
+    while(obj < 1.0) {
+        Shape_vector shape = separation_oracle();
+        if(shape.empty()) break;
+        double q = 1;
+        for(int i = 0; i < (int)shape.size(); i++) {
+            map<int, int> need_amount; // time to amount
+            for(pair<int, int> rng : shape[i].second) {
+                int left = rng.first, right = rng.second;
+                for(int t = left; t <= right; t++) {
+                    need_amount[t]++;
+                }
+            }
+
+            for(pair<int, int> P : need_amount) {
+                int t = P.first;
+                double theta = P.second;
+                q = min(q, graph.get_node_memory_at(i, t) / theta);
+            }
         }
+
+
+        int request_index = -1;
+        for(int i = 0; i < (int)requests.size(); i++) {
+            if(requests[i] == make_pair(shape.front().first, shape.back().first)) {
+                request_index = i;
+            }
+        }
+
+        x[request_index][shape] += q;
+    
+        double ori = alpha[request_index];
+        alpha[request_index] = alpha[request_index] * (1 + epsilon * q);
+        obj += (alpha[request_index] - ori);
+
+        for(int i = 0; i < (int)shape.size(); i++) {
+            map<int, int> need_amount; // time to amount
+            for(pair<int, int> rng : shape[i].second) {
+                int left = rng.first, right = rng.second;
+                for(int t = left; t <= right; t++) {
+                    need_amount[t]++;
+                }
+            }
+
+            for(pair<int, int> P : need_amount) {
+                int t = P.first;
+                int node_id = shape[i].first;
+                double theta = P.second;
+                double original = beta[node_id][t];
+                beta[node_id][t] = beta[node_id][t] * (1 + epsilon * (q / (graph.get_node_memory_at(node_id, t) / theta)));
+                obj += (beta[node_id][t] - original) * theta;
+            }
+        }
+
+        // cerr << "[MyAlgo1] obj = " << obj << endl;
     }
+
+    double max_xim_sum = 0;
+    for(int i = 0; i < (int)requests.size(); i++) {
+        double xim_sum = 0;
+        for(auto P : x[i]) {
+            xim_sum += P.second;
+            res["fidelity_gain"] += P.second * Shape(P.first).get_fidelity(A, B, n, T, tao);
+            res["succ_request_cnt"] += P.second;
+        }
+        max_xim_sum = max(max_xim_sum, xim_sum);
+    }
+
+    res["succ_request_cnt"] /= max_xim_sum;
+    res["fidelity_gain"] /= max_xim_sum;
 
     cerr << "[" << algorithm_name << "] end" << endl;
 }

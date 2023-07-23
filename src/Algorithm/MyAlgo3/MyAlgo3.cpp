@@ -32,12 +32,11 @@ pair<Shape, double> MyAlgo3::calculate_best_shape(int src, int dst) {
         }
     }
 
-    double best = 0;
+    double best = EPS;
     int best_time = -1;
-    double BOUND = 0.3;
     for(int t = time_limit - 1; t >= 0; t--) {
         double result = solve_fidelity(0, path.size() - 1, t, 0, path);
-        if(result > BOUND) {
+        if(result > best) {
             best_time = t;
             best = result;
             break;

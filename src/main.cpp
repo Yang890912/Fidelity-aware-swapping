@@ -70,7 +70,7 @@ int main(){
             int request_cnt = input_parameter["request_cnt"];
             int time_limit = input_parameter["time_limit"];
 
-            #pragma omp parallel for
+            // #pragma omp parallel for
             for(int r = 0; r < round; r++){
                 string round_str = to_string(r);
                 ofstream ofs;
@@ -101,10 +101,10 @@ int main(){
                     requests.push_back(new_request);
                 }
                 vector<AlgorithmBase*> algorithms;
-                algorithms.emplace_back(new MyAlgo1(graph, requests));
-                algorithms.emplace_back(new MyAlgo2(graph, requests));
-                algorithms.emplace_back(new MyAlgo3(graph, requests));
-                algorithms.emplace_back(new MyAlgo4(graph, requests));
+                // algorithms.emplace_back(new MyAlgo1(graph, requests));
+                // algorithms.emplace_back(new MyAlgo2(graph, requests));
+                // algorithms.emplace_back(new MyAlgo3(graph, requests));
+                // algorithms.emplace_back(new MyAlgo4(graph, requests));
                 algorithms.emplace_back(new MyAlgo5(graph, requests));
 
 
