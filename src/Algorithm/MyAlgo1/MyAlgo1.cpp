@@ -18,6 +18,9 @@ void MyAlgo1::variable_initialize() {
     double delta = (1 + epsilon) * (1.0 / pow((1 + epsilon) * m, 1.0 / epsilon));
     obj = m * delta;
     cerr << "[MyAlgo1] delta = " << delta << endl;
+    x.clear();
+    alpha.clear();
+    beta.clear();
     x.resize(requests.size());
     alpha.resize(requests.size(), delta);
     beta.resize(graph.get_num_nodes(), vector<double>(graph.get_time_limit()));
