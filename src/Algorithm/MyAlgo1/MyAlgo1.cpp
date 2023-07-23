@@ -177,8 +177,8 @@ void MyAlgo1::run() {
     // alpha(v) = alpha(v)(1 + eps(q / ahpla(v))
     // beta(v, t) = beta(v, t)(1 + eps(q / beta(v, t))
 
-    int round = 5;
-    while(round--) {
+    // int round = 5;
+    // while(round--) {
         variable_initialize();
         while(obj < 1.0) {
             // cerr << "obj = " << obj << endl;
@@ -264,13 +264,13 @@ void MyAlgo1::run() {
             }
 
             if(used[request_index]) continue;
-            used[request_index] = true;
             if(graph.check_resource(shape)) {
+                used[request_index] = true;
                 cerr << "[MyAlgo1] " << P.first << " " << P.second.size() << endl;
                 graph.reserve_shape(shape);
             }
         }
-    }
+    // }
 
     res["fidelity_gain"] = graph.get_fidelity_gain();
     res["succ_request_cnt"] = graph.get_succ_request_cnt();
