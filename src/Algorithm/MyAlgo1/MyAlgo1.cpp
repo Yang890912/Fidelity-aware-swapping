@@ -252,7 +252,7 @@ void MyAlgo1::run() {
             if(left.second.size() != right.second.size()) return left.second.size() > right.second.size();
             return left.second < right.second;
         });
-        cerr << "[MyAlgo1] " << shapes.size() << endl;
+        // cerr << "[MyAlgo1] " << shapes.size() << endl;
         vector<bool> used(requests.size(), false);
         for(pair<double, Shape_vector> P : shapes) {
             Shape shape = Shape(P.second);
@@ -266,7 +266,7 @@ void MyAlgo1::run() {
             if(used[request_index]) continue;
             if(graph.check_resource(shape)) {
                 used[request_index] = true;
-                cerr << "[MyAlgo1] " << P.first << " " << P.second.size() << endl;
+                // cerr << "[MyAlgo1] " << P.first << " " << P.second.size() << endl;
                 graph.reserve_shape(shape);
             }
         }
