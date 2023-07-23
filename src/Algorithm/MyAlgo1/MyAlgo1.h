@@ -18,6 +18,7 @@ class MyAlgo1 : public AlgorithmBase {
     vector<vector<vector<bool>>> caled;
     vector<vector<vector<int>>> par;
     double epsilon, obj;
+    void variable_initialize();
     Shape_vector separation_oracle();
     pair<Shape_vector, double> find_min_shape(int src, int dst);
     double recursion_calculate_min_shape(int left, int right, int t, vector<int> &path);

@@ -32,8 +32,8 @@ int main(){
 
     map<string, double> default_setting;
     default_setting["num_nodes"] = 100;
-    default_setting["request_cnt"] = 20;
-    default_setting["time_limit"] = 10;
+    default_setting["request_cnt"] = 30;
+    default_setting["time_limit"] = 8;
     default_setting["avg_memory"] = 6;
     default_setting["tao"] = 0.2;
 
@@ -41,7 +41,7 @@ int main(){
     // change_parameter["request_cnt"] = {5, 15, 25, 35, 45};
     change_parameter["request_cnt"] = {10, 20, 30, 40, 50};
     change_parameter["num_nodes"] = {50, 100, 125, 150, 200};
-    change_parameter["time_limit"] = {5, 10, 15, 20, 25};
+    change_parameter["time_limit"] = {4, 6, 8, 10, 12};
     change_parameter["avg_memory"] = {4, 6, 8, 10, 12};
     change_parameter["tao"] = {0.1, 0.2, 0.3, 0.4, 0.5};
 
@@ -98,7 +98,7 @@ int main(){
                 vector<pair<int, int>> requests;
                 for(int i = 0; i < request_cnt; i++) {
                     pair<int, int> new_request = generate_new_request(num_nodes);
-                    while(graph.get_path(new_request.first, new_request.second).size() <= 4) {
+                    while(graph.get_path(new_request.first, new_request.second).size() <= 5) {
                         new_request = generate_new_request(num_nodes);
                     }
                     requests.push_back(new_request);

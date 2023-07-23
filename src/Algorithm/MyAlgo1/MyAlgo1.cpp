@@ -3,6 +3,10 @@
 MyAlgo1::MyAlgo1(Graph graph, vector<pair<int, int>> requests):
     AlgorithmBase(graph, requests) {
     algorithm_name = "MyAlgo1";
+
+}
+
+void MyAlgo1::variable_initialize() {
     // m = i + vt
     // x(i, m) = 0
     // delta = (1 + eps)((1 + eps)m)^(-1/eps)
@@ -24,7 +28,6 @@ MyAlgo1::MyAlgo1(Graph graph, vector<pair<int, int>> requests):
         }
     }
 }
-
 
 Shape_vector MyAlgo1::separation_oracle() {
     Shape_vector min_shape;
@@ -170,92 +173,96 @@ void MyAlgo1::run() {
     // alpha(v) = alpha(v)(1 + eps(q / ahpla(v))
     // beta(v, t) = beta(v, t)(1 + eps(q / beta(v, t))
 
-    while(obj < 1.0) {
-        Shape_vector shape = separation_oracle();
-        if(shape.empty()) break;
-        double q = 1;
-        for(int i = 0; i < (int)shape.size(); i++) {
-            map<int, int> need_amount; // time to amount
-            for(pair<int, int> rng : shape[i].second) {
-                int left = rng.first, right = rng.second;
-                for(int t = left; t <= right; t++) {
-                    need_amount[t]++;
+    int round = 5;
+    while(round--) {
+        variable_initialize();
+        while(obj < 1.0) {
+            Shape_vector shape = separation_oracle();
+            if(shape.empty()) break;
+            double q = 1;
+            for(int i = 0; i < (int)shape.size(); i++) {
+                map<int, int> need_amount; // time to amount
+                for(pair<int, int> rng : shape[i].second) {
+                    int left = rng.first, right = rng.second;
+                    for(int t = left; t <= right; t++) {
+                        need_amount[t]++;
+                    }
+                }
+
+                for(pair<int, int> P : need_amount) {
+                    int t = P.first;
+                    double theta = P.second;
+                    q = min(q, graph.get_node_memory_at(i, t) / theta);
                 }
             }
 
-            for(pair<int, int> P : need_amount) {
-                int t = P.first;
-                double theta = P.second;
-                q = min(q, graph.get_node_memory_at(i, t) / theta);
-            }
-        }
 
-
-        int request_index = -1;
-        for(int i = 0; i < (int)requests.size(); i++) {
-            if(requests[i] == make_pair(shape.front().first, shape.back().first)) {
-                request_index = i;
-            }
-        }
-
-        x[request_index][shape] += q;
-    
-        double ori = alpha[request_index];
-        alpha[request_index] = alpha[request_index] * (1 + epsilon * q);
-        obj += (alpha[request_index] - ori);
-
-        for(int i = 0; i < (int)shape.size(); i++) {
-            map<int, int> need_amount; // time to amount
-            for(pair<int, int> rng : shape[i].second) {
-                int left = rng.first, right = rng.second;
-                for(int t = left; t <= right; t++) {
-                    need_amount[t]++;
+            int request_index = -1;
+            for(int i = 0; i < (int)requests.size(); i++) {
+                if(requests[i] == make_pair(shape.front().first, shape.back().first)) {
+                    request_index = i;
                 }
             }
 
-            for(pair<int, int> P : need_amount) {
-                int t = P.first;
-                int node_id = shape[i].first;
-                double theta = P.second;
-                double original = beta[node_id][t];
-                beta[node_id][t] = beta[node_id][t] * (1 + epsilon * (q / (graph.get_node_memory_at(node_id, t) / theta)));
-                obj += (beta[node_id][t] - original) * theta;
+            x[request_index][shape] += q;
+        
+            double ori = alpha[request_index];
+            alpha[request_index] = alpha[request_index] * (1 + epsilon * q);
+            obj += (alpha[request_index] - ori);
+
+            for(int i = 0; i < (int)shape.size(); i++) {
+                map<int, int> need_amount; // time to amount
+                for(pair<int, int> rng : shape[i].second) {
+                    int left = rng.first, right = rng.second;
+                    for(int t = left; t <= right; t++) {
+                        need_amount[t]++;
+                    }
+                }
+
+                for(pair<int, int> P : need_amount) {
+                    int t = P.first;
+                    int node_id = shape[i].first;
+                    double theta = P.second;
+                    double original = beta[node_id][t];
+                    beta[node_id][t] = beta[node_id][t] * (1 + epsilon * (q / (graph.get_node_memory_at(node_id, t) / theta)));
+                    obj += (beta[node_id][t] - original) * theta;
+                }
             }
+
+            // cerr << "[MyAlgo1] obj = " << obj << endl;
         }
 
-        // cerr << "[MyAlgo1] obj = " << obj << endl;
-    }
 
+        vector<pair<double, Shape_vector>> shapes;
 
-    vector<pair<double, Shape_vector>> shapes;
-
-    for(int i = 0; i < (int)requests.size(); i++) {
-        for(auto P : x[i]) {
-            shapes.push_back({P.second, P.first});
-        }
-    }
-
-    sort(shapes.rbegin(), shapes.rend(), [](pair<double, Shape_vector> left, pair<double, Shape_vector> right) {
-        if(fabs(left.first - right.first) >= EPS) return left.first < right.first;
-        if(left.second.size() != right.second.size()) return left.second.size() > right.second.size();
-        return left.second < right.second;
-    });
-    cerr << "[MyAlgo1] " << shapes.size() << endl;
-    vector<bool> used(requests.size(), false);
-    for(pair<double, Shape_vector> P : shapes) {
-        Shape shape = Shape(P.second);
-        int request_index = -1;
         for(int i = 0; i < (int)requests.size(); i++) {
-            if(requests[i] == make_pair(shape.get_node_mem_range().front().first, shape.get_node_mem_range().back().first)) {
-                request_index = i;
+            for(auto P : x[i]) {
+                shapes.push_back({P.second, P.first});
             }
         }
 
-        if(used[request_index]) continue;
-        used[request_index] = true;
-        if(graph.check_resource(shape)) {
-            cerr << "[MyAlgo1] " << P.first << " " << P.second.size() << endl;
-            graph.reserve_shape(shape);
+        sort(shapes.rbegin(), shapes.rend(), [](pair<double, Shape_vector> left, pair<double, Shape_vector> right) {
+            if(fabs(left.first - right.first) >= EPS) return left.first < right.first;
+            if(left.second.size() != right.second.size()) return left.second.size() > right.second.size();
+            return left.second < right.second;
+        });
+        cerr << "[MyAlgo1] " << shapes.size() << endl;
+        vector<bool> used(requests.size(), false);
+        for(pair<double, Shape_vector> P : shapes) {
+            Shape shape = Shape(P.second);
+            int request_index = -1;
+            for(int i = 0; i < (int)requests.size(); i++) {
+                if(requests[i] == make_pair(shape.get_node_mem_range().front().first, shape.get_node_mem_range().back().first)) {
+                    request_index = i;
+                }
+            }
+
+            if(used[request_index]) continue;
+            used[request_index] = true;
+            if(graph.check_resource(shape)) {
+                cerr << "[MyAlgo1] " << P.first << " " << P.second.size() << endl;
+                graph.reserve_shape(shape);
+            }
         }
     }
 

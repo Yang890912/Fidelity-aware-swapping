@@ -13,7 +13,7 @@ MyAlgo2::MyAlgo2(Graph graph, vector<pair<int, int>> requests):
     double m = requests.size() + (double)graph.get_num_nodes() * (double)graph.get_time_limit();
     double delta = (1 + epsilon) * (1.0 / pow((1 + epsilon) * m, 1.0 / epsilon));
     obj = m * delta;
-    cerr << "[MyAlgo5] delta = " << delta << endl;
+    cerr << "[MyAlgo2] delta = " << delta << endl;
     x.resize(requests.size());
     alpha.resize(requests.size(), delta);
     beta.resize(graph.get_num_nodes(), vector<double>(graph.get_time_limit()));
