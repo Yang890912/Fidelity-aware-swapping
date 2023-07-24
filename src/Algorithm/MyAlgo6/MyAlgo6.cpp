@@ -169,7 +169,7 @@ double MyAlgo6::solve2(int left, int right, int t, int state, vector<int> &path)
 
     if(caled2[left][right][t][state]) return dp2[left][right][t][state];
 
-    double best = solve2(left, right, t - 1, state, path);
+    double best = solve2(left, right, t - 1, state, path) + 1.0 / left_remain + 1.0 / right_remain;
     pair<int, int> record = {-1, -1};
 
     for(int k = left + 1; k < right; k++) {
@@ -179,7 +179,7 @@ double MyAlgo6::solve2(int left, int right, int t, int state, vector<int> &path)
 
             double left_result = solve2(left, k, t - 1, l_state, path);
             double right_result = solve2(k, right, t - 1, r_state, path);
-            double result = left_result + right_result;
+            double result = left_result + right_result + 1.0 / left_remain + 1.0 / right_remain;
             if(result < best) {
                 best = result;
                 record = {k, s};
