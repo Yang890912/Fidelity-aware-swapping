@@ -12,6 +12,7 @@
 #include "Algorithm/MyAlgo3/MyAlgo3.h"
 #include "Algorithm/MyAlgo4/MyAlgo4.h"
 #include "Algorithm/MyAlgo5/MyAlgo5.h"
+#include "Algorithm/MyAlgo6/MyAlgo6.h"
 
 using namespace std;
 
@@ -109,6 +110,7 @@ int main(){
                 algorithms.emplace_back(new MyAlgo3(graph, requests));
                 algorithms.emplace_back(new MyAlgo4(graph, requests));
                 algorithms.emplace_back(new MyAlgo5(graph, requests));
+                algorithms.emplace_back(new MyAlgo6(graph, requests));
 
 
                 #pragma omp parallel for
