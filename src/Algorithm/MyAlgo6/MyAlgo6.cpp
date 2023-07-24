@@ -39,7 +39,6 @@ pair<Shape, double> MyAlgo6::calculate_best_shape(int src, int dst) {
         if(result > best) {
             best_time = t;
             best = result;
-            break;
         }
     }
 
@@ -88,7 +87,6 @@ pair<Shape, double> MyAlgo6::calculate_best_shape2(int src, int dst) {
         if(result < best) {
             best_time = t;
             best = result;
-            break;
         }
     }
 
