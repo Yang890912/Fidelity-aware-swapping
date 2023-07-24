@@ -39,7 +39,6 @@ pair<Shape, double> MyAlgo3::calculate_best_shape(int src, int dst) {
         if(result > best) {
             best_time = t;
             best = result;
-            break;
         }
     }
 

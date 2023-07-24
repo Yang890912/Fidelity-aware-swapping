@@ -17,7 +17,7 @@ void MyAlgo1::variable_initialize() {
     double m = requests.size() + (double)graph.get_num_nodes() * (double)graph.get_time_limit();
     double delta = (1 + epsilon) * (1.0 / pow((1 + epsilon) * m, 1.0 / epsilon));
     obj = m * delta;
-    cerr << "[MyAlgo1] delta = " << delta << endl;
+    // cerr << "[MyAlgo1] delta = " << delta << endl;
     x.clear();
     alpha.clear();
     beta.clear();
