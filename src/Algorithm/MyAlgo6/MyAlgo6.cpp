@@ -326,11 +326,13 @@ double MyAlgo6::cp_value(Shape shape) {
         }
         for(auto P : need_amount) {
             int t = P.first, amount = P.second;
-            double remain_ratio = graph.get_node_memory_at(node, t) / amount;
+            double remain_ratio = (double)amount / (double)graph.get_node_memory_at(node, t);
             sum += remain_ratio;
         }
     }
-    return sum;
+
+    if(sum <= EPS) return 0;
+    return shape.get_fidelity(A, B, n, T, tao) / sum;
 }
 
 void MyAlgo6::run() {
