@@ -80,7 +80,7 @@ pair<Shape, double> MyAlgo6::calculate_best_shape2(int src, int dst) {
         }
     }
 
-    double best = EPS;
+    double best = INF;
     int best_time = -1;
     for(int t = time_limit - 1; t >= 0; t--) {
         double result = solve2(0, path.size() - 1, t, 0, path);
