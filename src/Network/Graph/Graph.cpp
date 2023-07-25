@@ -136,7 +136,7 @@ double Graph::get_fidelity_gain() {
 }
 
 double Graph::get_utilization() {
-    return (double)usage / (double)memory_total;
+    return (double)usage / ((double)memory_total * (double)time_limit);
 }
 
 int Graph::get_memory_total() {
