@@ -16,7 +16,7 @@ protected:
     Graph graph;
     map<string, double> res;
     vector<pair<int, int>> requests;
-    int time_limit;
+    int time_limit, memory_total;
     double A, B, n, T, tao;
     double bar(double F);
     double Fswap(double Fa, double Fb);

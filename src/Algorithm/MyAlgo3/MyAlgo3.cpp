@@ -364,7 +364,7 @@ void MyAlgo3::run() {
         graph.reserve_shape(best_shape);
         res["fidelity_gain"] = graph.get_fidelity_gain();
         res["succ_request_cnt"] = graph.get_succ_request_cnt();
-        res["utilization"] = graph.get_utilization();
+        res["utilization"] = (double)graph.get_usage() / (double)memory_total;
     }
 
     cerr << "[" << algorithm_name << "] end" << endl;

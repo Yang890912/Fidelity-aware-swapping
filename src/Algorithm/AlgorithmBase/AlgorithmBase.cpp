@@ -8,6 +8,19 @@ AlgorithmBase::AlgorithmBase(Graph graph, vector<pair<int, int>> requests):
     n = graph.get_n();
     T = graph.get_T();
     tao = graph.get_tao();
+
+    vector<bool> passed_node(graph.get_num_nodes(), false);
+    memory_total = 0;
+    for(int i = 0; i < (int)requests.size(); i++) {
+        int src = requests[i].first, dst = requests[i].second;
+        vector<int> path = graph.get_path(src, dst);
+        for(auto node : path) {
+            if(!passed_node[node]) {
+                passed_node[node] = true;
+                memory_total += graph.get_node_memory(node);
+            }
+        }
+    }
 }
 AlgorithmBase::~AlgorithmBase() {
     if(DEBUG) cerr << "delete AlgorithmBase" << endl;
