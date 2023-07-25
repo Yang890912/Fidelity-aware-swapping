@@ -251,7 +251,7 @@ void MyAlgo2::run() {
     for(int i = 0; i < graph.get_num_nodes(); i++) {
         memory_total += graph.get_node_memory(i);
     }
-    res["utilization"] = (usage / ((double)memory_total / (double)graph.get_time_limit())) / max_xim_sum;
+    res["utilization"] = (usage / ((double)memory_total * (double)graph.get_time_limit())) / max_xim_sum;
 
     cerr << "[" << algorithm_name << "] end" << endl;
 }
