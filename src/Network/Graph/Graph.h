@@ -28,6 +28,7 @@ class Graph {
     vector<Node> nodes;
     vector<vector<int>> adj_list;
     vector<set<int>> adj_set;
+    vector<bool> passed_node;
 public:
     Graph(int _num_nodes, int _time_limit, int memory_lower_bound, int memory_upper_bound, double _A, double _B, double _n, double _T, double _tao);
     ~Graph();

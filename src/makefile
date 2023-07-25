@@ -1,6 +1,6 @@
 dependency = Network/Node/Node.o Network/Shape/Shape.o Network/Graph/Graph.o Algorithm/AlgorithmBase/AlgorithmBase.o config.o
 algorithm = Algorithm/MyAlgo2/MyAlgo2.o Algorithm/MyAlgo1/MyAlgo1.o Algorithm/MyAlgo3/MyAlgo3.o Algorithm/MyAlgo4/MyAlgo4.o Algorithm/MyAlgo5/MyAlgo5.o
-gcc_flag = -g -Wall -Wextra -O3 -Ofast --std=c++17
+gcc_flag = -g -Wall -Wextra -Ofast --std=c++17
 
 all: a.out
 

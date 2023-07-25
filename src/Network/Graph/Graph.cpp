@@ -81,6 +81,8 @@ Graph::Graph(int _num_nodes, int _time_limit, int memory_lower_bound, int memory
 
     adj_list = gen_tree(num_nodes);
     adj_set.clear();
+    passed_node.clear();
+    passed_node.resize(num_nodes, false);
     adj_set.resize(num_nodes);
 
     for(int i = 0; i < num_nodes; i++) {
@@ -93,7 +95,6 @@ Graph::Graph(int _num_nodes, int _time_limit, int memory_lower_bound, int memory
     memory_total = 0;
     for(int id = 0; id < num_nodes; id++) {
         int memory_rand = rnd(memory_lower_bound, memory_upper_bound);
-        memory_total += memory_rand;
         nodes.push_back(Node(id, memory_rand, time_limit));
         for(int v : adj_list[id]) {
             nodes[id].add_neighbor(v);
@@ -224,6 +225,11 @@ void Graph::reserve_shape(Shape shape) {
             }
             usage += amount;
             nodes[node].reserve_memory(t, amount);
+        }
+
+        if(!passed_node[node]) {
+            passed_node[node] = true;
+            memory_total += nodes[node].get_memory();
         }
     }
     for(int i = 1; i < (int)nm.size(); i++) {
