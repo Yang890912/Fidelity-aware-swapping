@@ -93,7 +93,7 @@ Graph::Graph(int _num_nodes, int _time_limit, int memory_lower_bound, int memory
     memory_total = 0;
     for(int id = 0; id < num_nodes; id++) {
         int memory_rand = rnd(memory_lower_bound, memory_upper_bound);
-        memory_total = memory_rand;
+        memory_total += memory_rand;
         nodes.push_back(Node(id, memory_rand, time_limit));
         for(int v : adj_list[id]) {
             nodes[id].add_neighbor(v);
