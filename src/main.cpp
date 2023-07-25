@@ -57,7 +57,7 @@ int main(){
     }
     
 
-    int round = 20;
+    int round = 30;
     for(string X_name : X_names) {
         map<string, double> input_parameter = default_setting;
 
@@ -67,8 +67,8 @@ int main(){
             
             int num_nodes = input_parameter["num_nodes"];
             int avg_memory = input_parameter["avg_memory"];
-            int memory_up = avg_memory + 2;
-            int memory_lb = avg_memory - 2;
+            int memory_up = avg_memory + 1;
+            int memory_lb = avg_memory - 1;
             int request_cnt = input_parameter["request_cnt"];
             int time_limit = input_parameter["time_limit"];
 
