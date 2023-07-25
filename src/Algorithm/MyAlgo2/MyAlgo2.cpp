@@ -228,6 +228,9 @@ void MyAlgo2::run() {
 
     double max_xim_sum = 0;
     double usage = 0;
+
+    int memory_total = 0;
+    vector<bool> passed_node(graph.get_num_nodes(), false);
     for(int i = 0; i < (int)requests.size(); i++) {
         double xim_sum = 0;
         for(auto P : x[i]) {
@@ -236,6 +239,11 @@ void MyAlgo2::run() {
             res["succ_request_cnt"] += P.second;
 
             for(auto id_mem : P.first) {
+                int node = id_mem.first;
+                if(!passed_node[node]) {
+                    memory_total += graph.get_node_memory(node);
+                    passed_node[node] = true;
+                }
                 for(pair<int, int> mem_range : id_mem.second) {
                     usage += (mem_range.second - mem_range.first) * P.second;
                 }
@@ -247,9 +255,8 @@ void MyAlgo2::run() {
     res["succ_request_cnt"] /= max_xim_sum;
     res["fidelity_gain"] /= max_xim_sum;
 
-    int memory_total = 0;
     for(int i = 0; i < graph.get_num_nodes(); i++) {
-        memory_total += graph.get_node_memory(i);
+
     }
     res["utilization"] = (usage / ((double)memory_total * (double)graph.get_time_limit())) / max_xim_sum;
 
