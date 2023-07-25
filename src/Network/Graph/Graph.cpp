@@ -9,7 +9,7 @@ int rnd(int lower_bound, int upper_bound) {
 }
 
 Graph::Graph(int _num_nodes, int _time_limit, int memory_lower_bound, int memory_upper_bound, double _A, double _B, double _n, double _T, double _tao):
-    num_nodes(_num_nodes), time_limit(_time_limit), A(_A), B(_B), n(_n), T(_T), tao(_tao), fidelity_gain(0), succ_request_cnt(0) {
+    num_nodes(_num_nodes), time_limit(_time_limit), A(_A), B(_B), n(_n), T(_T), tao(_tao), fidelity_gain(0), usage(0), succ_request_cnt(0) {
     // geneator an adj list
     auto gen_tree = [&](int nn) {
         vector<pair<int, int>> edge_list;
@@ -90,8 +90,10 @@ Graph::Graph(int _num_nodes, int _time_limit, int memory_lower_bound, int memory
     }
     assert((int)adj_list.size() == num_nodes);
 
+    memory_total = 0;
     for(int id = 0; id < num_nodes; id++) {
         int memory_rand = rnd(memory_lower_bound, memory_upper_bound);
+        memory_total = memory_rand;
         nodes.push_back(Node(id, memory_rand, time_limit));
         for(int v : adj_list[id]) {
             nodes[id].add_neighbor(v);
@@ -131,6 +133,14 @@ int Graph::get_succ_request_cnt() {
 
 double Graph::get_fidelity_gain() {
     return fidelity_gain;
+}
+
+double Graph::get_utilization() {
+    return (double)usage / (double)memory_total;
+}
+
+int Graph::get_memory_total() {
+    return memory_total;
 }
 
 void DFS(int x, vector<bool> &vis, vector<int> &par, vector<vector<int>> &adj) {
@@ -212,6 +222,7 @@ void Graph::reserve_shape(Shape shape) {
                 cerr << "node " << node << "\'s memory is not enough at time " << t << endl;
                 exit(1);
             }
+            usage += amount;
             nodes[node].reserve_memory(t, amount);
         }
     }

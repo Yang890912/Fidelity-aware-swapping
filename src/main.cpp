@@ -12,7 +12,6 @@
 #include "Algorithm/MyAlgo3/MyAlgo3.h"
 #include "Algorithm/MyAlgo4/MyAlgo4.h"
 #include "Algorithm/MyAlgo5/MyAlgo5.h"
-#include "Algorithm/MyAlgo6/MyAlgo6.h"
 
 using namespace std;
 
@@ -39,17 +38,16 @@ int main(){
     default_setting["tao"] = 0.2;
 
     map<string, vector<double>> change_parameter;
-    // change_parameter["request_cnt"] = {5, 15, 25, 35, 45};
     change_parameter["request_cnt"] = {10, 20, 30, 40, 50};
     change_parameter["num_nodes"] = {50, 100, 125, 150, 200};
-    change_parameter["time_limit"] = {6, 9, 12, 15, 18};
-    change_parameter["avg_memory"] = {4, 7, 11, 14, 17};
+    change_parameter["time_limit"] = {6, 8, 10, 12, 14};
+    change_parameter["avg_memory"] = {4, 6, 8, 10, 12};
     change_parameter["tao"] = {0.1, 0.2, 0.3, 0.4, 0.5};
 
 
     vector<string> X_names = {"num_nodes", "request_cnt", "time_limit", "avg_memory", "tao"};
-    vector<string> Y_names = {"fidelity_gain", "succ_request_cnt"};
-    vector<string> algo_names = {"MyAlgo1", "MyAlgo2", "MyAlgo3", "MyAlgo4", "MyAlgo5", "MyAlgo6"};
+    vector<string> Y_names = {"fidelity_gain", "succ_request_cnt", "utilization"};
+    vector<string> algo_names = {"MyAlgo1", "MyAlgo2", "MyAlgo3", "Merge", "Linear"};
     // init result
     for(string X_name : X_names) {
         for(string Y_name : Y_names){
@@ -95,7 +93,7 @@ int main(){
                 double A = 0.25, B = 0.75, tao = input_parameter["tao"], T = 10, n = 2;
                 Graph graph(num_nodes, time_limit, memory_lb, memory_up, A, B, n, T, tao);
                 
-                ofs << "---------------in round " << r << " -------------" <<endl;
+                ofs << "--------------- in round " << r << " -------------" <<endl;
                 vector<pair<int, int>> requests;
                 for(int i = 0; i < request_cnt; i++) {
                     pair<int, int> new_request = generate_new_request(num_nodes);
@@ -110,7 +108,6 @@ int main(){
                 algorithms.emplace_back(new MyAlgo3(graph, requests));
                 algorithms.emplace_back(new MyAlgo4(graph, requests));
                 algorithms.emplace_back(new MyAlgo5(graph, requests));
-                algorithms.emplace_back(new MyAlgo6(graph, requests));
 
 
                 #pragma omp parallel for

@@ -274,5 +274,6 @@ void MyAlgo1::run() {
 
     res["fidelity_gain"] = graph.get_fidelity_gain();
     res["succ_request_cnt"] = graph.get_succ_request_cnt();
+    res["utilization"] = graph.get_utilization();
     cerr << "[" << algorithm_name << "] end" << endl;
 }

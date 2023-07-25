@@ -2,7 +2,7 @@
 
 MyAlgo5::MyAlgo5(Graph graph, vector<pair<int, int>> requests):
     AlgorithmBase(graph, requests) {
-    algorithm_name = "MyAlgo5";
+    algorithm_name = "Linear";
     linear_shape.resize(graph.get_num_nodes() + 1);
 }
 
@@ -112,6 +112,7 @@ void MyAlgo5::run() {
             graph.reserve_shape(Shape(shape));
             res["fidelity_gain"] = graph.get_fidelity_gain();
             res["succ_request_cnt"] = graph.get_succ_request_cnt();
+            res["utilization"] = graph.get_utilization();
         }
     }
     cerr << "[" << algorithm_name << "] end" << endl;

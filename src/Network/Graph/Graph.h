@@ -23,6 +23,7 @@ class Graph {
     int time_limit;
     double A, B, n, T, tao;
     double fidelity_gain;
+    int usage, memory_total;
     int succ_request_cnt;
     vector<Node> nodes;
     vector<vector<int>> adj_list;
@@ -35,6 +36,7 @@ public:
     int get_num_nodes();
     int get_time_limit();
     int get_succ_request_cnt();
+    int get_memory_total();
 
     double get_A();
     double get_B();
@@ -42,6 +44,7 @@ public:
     double get_T();
     double get_tao();
     double get_fidelity_gain();
+    double get_utilization();
     bool check_resource(Shape shape);
     void reserve_shape(Shape shape);
     vector<int> get_path(int from, int to);

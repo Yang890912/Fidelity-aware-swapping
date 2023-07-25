@@ -227,18 +227,26 @@ void MyAlgo2::run() {
     }
 
     double max_xim_sum = 0;
+    double usage = 0;
     for(int i = 0; i < (int)requests.size(); i++) {
         double xim_sum = 0;
         for(auto P : x[i]) {
             xim_sum += P.second;
             res["fidelity_gain"] += P.second * Shape(P.first).get_fidelity(A, B, n, T, tao);
             res["succ_request_cnt"] += P.second;
+
+            for(auto id_mem : P.first) {
+                for(pair<int, int> mem_range : id_mem.second) {
+                    usage += (mem_range.second - mem_range.first) * P.second;
+                }
+            }
         }
         max_xim_sum = max(max_xim_sum, xim_sum);
     }
 
     res["succ_request_cnt"] /= max_xim_sum;
     res["fidelity_gain"] /= max_xim_sum;
+    res["utilization"] = usage / (double)graph.get_memory_total();
 
     cerr << "[" << algorithm_name << "] end" << endl;
 }

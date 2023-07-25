@@ -134,7 +134,7 @@ void Shape::print() {
     cerr << "length = " << node_mem_range.size() << endl;
     for(int i = 0; i < (int)node_mem_range.size(); i++) {
         int id = node_mem_range[i].first;
-        cerr << "--- id = " << id << "---" << endl;
+        cerr << "--- id = " << id << " ---" << endl;
         for(auto P : node_mem_range[i].second) {
             cerr << "{" << P.first << ", " << P.second << "}" << endl;
         }
