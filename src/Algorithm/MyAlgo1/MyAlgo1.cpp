@@ -273,7 +273,7 @@ void MyAlgo1::run() {
             }
         }
 
-        sort(requests.rbegin(), requests.rend());
+        sort(finished.rbegin(), finished.rend());
         for(auto fin : finished) {
             requests.erase(requests.begin() + fin);
         }
