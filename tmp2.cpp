@@ -11,7 +11,6 @@
 #include "Algorithm/MyAlgo2/MyAlgo2.h"
 #include "Algorithm/MyAlgo3/MyAlgo3.h"
 #include "Algorithm/MyAlgo4/MyAlgo4.h"
-#include "Algorithm/MyAlgo5/MyAlgo5.h"
 
 using namespace std;
 
@@ -32,22 +31,22 @@ int main(){
 
     map<string, double> default_setting;
     default_setting["num_nodes"] = 100;
-    default_setting["request_cnt"] = 30;
-    default_setting["time_limit"] = 8;
+    default_setting["request_cnt"] = 20;
+    default_setting["time_limit"] = 10;
     default_setting["avg_memory"] = 6;
     default_setting["tao"] = 0.2;
 
     map<string, vector<double>> change_parameter;
+    // change_parameter["request_cnt"] = {5, 15, 25, 35, 45};
     change_parameter["request_cnt"] = {10, 20, 30, 40, 50};
-    change_parameter["num_nodes"] = {50, 100, 150, 200, 250};
-    change_parameter["time_limit"] = {6, 8, 10, 12, 14};
+    change_parameter["num_nodes"] = {50, 100, 125, 150, 200};
+    change_parameter["time_limit"] = {5, 10, 15, 20, 25};
     change_parameter["avg_memory"] = {4, 6, 8, 10, 12};
     change_parameter["tao"] = {0.2, 0.4, 0.6, 0.8, 1};
 
-
     vector<string> X_names = {"num_nodes", "request_cnt", "time_limit", "avg_memory", "tao"};
-    vector<string> Y_names = {"fidelity_gain", "succ_request_cnt", "utilization"};
-    vector<string> algo_names = {"MyAlgo1", "MyAlgo2", "MyAlgo3", "Merge", "Linear"};
+    vector<string> Y_names = {"fidelity_gain", "succ_request_cnt"};
+    vector<string> algo_names = {"MyAlgo1", "MyAlgo2", "MyAlgo3", "MyAlgo4"};
     // init result
     for(string X_name : X_names) {
         for(string Y_name : Y_names){
@@ -57,8 +56,7 @@ int main(){
     }
     
 
-    int round = 30;
-    vector<pair<int, int>> last_requests;
+    int round = 10;
     for(string X_name : X_names) {
         map<string, double> input_parameter = default_setting;
 
@@ -68,10 +66,12 @@ int main(){
             
             int num_nodes = input_parameter["num_nodes"];
             int avg_memory = input_parameter["avg_memory"];
-            int memory_up = avg_memory + 1;
-            int memory_lb = avg_memory - 1;
+            int memory_up = avg_memory + 2;
+            int memory_lb = avg_memory - 2;
             int request_cnt = input_parameter["request_cnt"];
             int time_limit = input_parameter["time_limit"];
+
+            // python generate graph
 
             #pragma omp parallel for
             for(int r = 0; r < round; r++){
@@ -94,35 +94,26 @@ int main(){
                 double A = 0.25, B = 0.75, tao = input_parameter["tao"], T = 10, n = 2;
                 Graph graph(num_nodes, time_limit, memory_lb, memory_up, A, B, n, T, tao);
                 
-                ofs << "--------------- in round " << r << " -------------" <<endl;
+                ofs << "---------------in round " << r << " -------------" <<endl;
                 vector<pair<int, int>> requests;
-                if(X_name == "request_cnt") {
-                    requests = last_requests;
-                    request_cnt -= last_requests.size();
-                }
                 for(int i = 0; i < request_cnt; i++) {
                     pair<int, int> new_request = generate_new_request(num_nodes);
-                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 3) {
+                    while(graph.get_path(new_request.first, new_request.second).size() <= 4) {
                         new_request = generate_new_request(num_nodes);
                     }
                     requests.push_back(new_request);
                 }
-
-                last_requests = requests;
                 vector<AlgorithmBase*> algorithms;
                 algorithms.emplace_back(new MyAlgo1(graph, requests));
                 algorithms.emplace_back(new MyAlgo2(graph, requests));
                 algorithms.emplace_back(new MyAlgo3(graph, requests));
                 algorithms.emplace_back(new MyAlgo4(graph, requests));
-                algorithms.emplace_back(new MyAlgo5(graph, requests));
 
 
                 #pragma omp parallel for
                 for(int i = 0; i < (int)algorithms.size(); i++) {
                     algorithms[i]->run();
                 }
-
-
                 for(int i = 0; i < (int)algorithms.size(); i++) {
                     for(string Y_name : Y_names) {
                         result[r][algorithms[i]->get_name()][Y_name] = algorithms[i]->get_res(Y_name);
