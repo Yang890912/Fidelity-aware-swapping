@@ -103,8 +103,8 @@ int main(){
                 vector<pair<int, int>> requests;
                 for(int i = 0; i < request_cnt; i++) {
                     if(X_name == "request_cnt") {
-                        requests.push_back({2 * i + 1, 2 * i + 2});
-                        assert(2 * i + 2 <= num_nodes);
+                        requests.push_back({2 * i, 2 * i + 1});
+                        assert(2 * i + 1 < num_nodes);
                         continue;
                     }
                     pair<int, int> new_request = generate_new_request(num_nodes);
