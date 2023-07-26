@@ -36,15 +36,7 @@ int main(){
     default_setting["time_limit"] = 8;
     default_setting["avg_memory"] = 7;
     default_setting["tao"] = 0.2;
-    Graph default_graph(100, 8, 5, 9, 0.25, 0.75, 2, 10, 0.2);
-    vector<pair<int, int>> default_requests;
-    for(int i = 0; i < 100; i++) {
-        pair<int, int> new_request = generate_new_request(100);
-        while((int)default_graph.get_path(new_request.first, new_request.second).size() <= 3) {
-            new_request = generate_new_request(100);
-        }
-        default_requests.push_back(new_request);
-    }
+
 
     map<string, vector<double>> change_parameter;
     change_parameter["request_cnt"] = {10, 20, 30, 40, 50};
@@ -81,6 +73,15 @@ int main(){
             int request_cnt = input_parameter["request_cnt"];
             int time_limit = input_parameter["time_limit"];
 
+            Graph default_graph(100, 8, 5, 9, 0.25, 0.75, 2, 10, 0.2);
+            vector<pair<int, int>> default_requests;
+            for(int i = 0; i < 100; i++) {
+                pair<int, int> new_request = generate_new_request(100);
+                while((int)default_graph.get_path(new_request.first, new_request.second).size() <= 3) {
+                    new_request = generate_new_request(100);
+                }
+                default_requests.push_back(new_request);
+            }
             #pragma omp parallel for
             for(int r = 0; r < round; r++){
                 string round_str = to_string(r);
