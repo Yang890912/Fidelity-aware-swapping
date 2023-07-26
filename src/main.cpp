@@ -34,8 +34,10 @@ int main(){
     default_setting["num_nodes"] = 100;
     default_setting["request_cnt"] = 30;
     default_setting["time_limit"] = 8;
-    default_setting["avg_memory"] = 6;
+    default_setting["avg_memory"] = 8;
     default_setting["tao"] = 0.2;
+    Graph default_graph(100, 8, 6, 10, 0.25, 0.75, 2, 10, 0.2);
+
 
     map<string, vector<double>> change_parameter;
     change_parameter["request_cnt"] = {10, 20, 30, 40, 50};
@@ -45,7 +47,7 @@ int main(){
     change_parameter["tao"] = {0.2, 0.4, 0.6, 0.8, 1};
 
 
-    vector<string> X_names = {"num_nodes", "request_cnt", "time_limit", "avg_memory", "tao"};
+    vector<string> X_names = {"request_cnt", "time_limit", "avg_memory", "tao"};
     vector<string> Y_names = {"fidelity_gain", "succ_request_cnt", "utilization"};
     vector<string> algo_names = {"MyAlgo1", "MyAlgo2", "MyAlgo3", "Merge", "Linear"};
     // init result
@@ -68,8 +70,8 @@ int main(){
             
             int num_nodes = input_parameter["num_nodes"];
             int avg_memory = input_parameter["avg_memory"];
-            int memory_up = avg_memory + 1;
-            int memory_lb = avg_memory - 1;
+            int memory_up = avg_memory + 2;
+            int memory_lb = avg_memory - 2;
             int request_cnt = input_parameter["request_cnt"];
             int time_limit = input_parameter["time_limit"];
 
@@ -92,15 +94,20 @@ int main(){
                 //     exit(1);
                 // }
                 double A = 0.25, B = 0.75, tao = input_parameter["tao"], T = 10, n = 2;
+
                 Graph graph(num_nodes, time_limit, memory_lb, memory_up, A, B, n, T, tao);
-                
+                if(X_name == "request_cnt") {
+                    graph = default_graph;
+                }
+
                 ofs << "--------------- in round " << r << " -------------" <<endl;
                 vector<pair<int, int>> requests;
-                if(X_name == "request_cnt") {
-                    requests = last_requests;
-                    request_cnt -= last_requests.size();
-                }
                 for(int i = 0; i < request_cnt; i++) {
+                    if(X_name == "request_cnt") {
+                        requests.push_back({2 * i + 1, 2 * i + 2});
+                        assert(2 * i + 2 <= num_nodes);
+                        continue;
+                    }
                     pair<int, int> new_request = generate_new_request(num_nodes);
                     while((int)graph.get_path(new_request.first, new_request.second).size() <= 3) {
                         new_request = generate_new_request(num_nodes);
