@@ -177,8 +177,8 @@ void MyAlgo1::run() {
     // alpha(v) = alpha(v)(1 + eps(q / ahpla(v))
     // beta(v, t) = beta(v, t)(1 + eps(q / beta(v, t))
 
-    // int round = 5;
-    // while(round--) {
+    int round = 2;
+    while(round--) {
         variable_initialize();
         while(obj < 1.0) {
             // cerr << "obj = " << obj << endl;
@@ -270,7 +270,7 @@ void MyAlgo1::run() {
                 graph.reserve_shape(shape);
             }
         }
-    // }
+    }
 
     res["fidelity_gain"] = graph.get_fidelity_gain();
     res["succ_request_cnt"] = graph.get_succ_request_cnt();
