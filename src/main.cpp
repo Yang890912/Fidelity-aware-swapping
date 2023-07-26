@@ -37,7 +37,14 @@ int main(){
     default_setting["avg_memory"] = 6;
     default_setting["tao"] = 0.2;
     Graph default_graph(100, 8, 6, 10, 0.25, 0.75, 2, 10, 0.2);
-
+    vector<pair<int, int>> default_requests;
+    for(int i = 0; i < 100; i++) {
+        pair<int, int> new_request = generate_new_request(100);
+        while((int)default_graph.get_path(new_request.first, new_request.second).size() <= 5) {
+            new_request = generate_new_request(100);
+        }
+        default_requests.push_back(new_request);
+    }
 
     map<string, vector<double>> change_parameter;
     change_parameter["request_cnt"] = {10, 20, 30, 40, 50};
@@ -103,12 +110,11 @@ int main(){
                 vector<pair<int, int>> requests;
                 for(int i = 0; i < request_cnt; i++) {
                     if(X_name == "request_cnt") {
-                        requests.push_back({2 * i, 2 * i + 1});
-                        assert(2 * i + 1 < num_nodes);
+                        requests.push_back(default_requests[i]);
                         continue;
                     }
                     pair<int, int> new_request = generate_new_request(num_nodes);
-                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 3) {
+                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 5) {
                         new_request = generate_new_request(num_nodes);
                     }
                     requests.push_back(new_request);
