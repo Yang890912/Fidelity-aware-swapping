@@ -59,6 +59,21 @@ int main(){
     
 
     int round = 30;
+    vector<Graph> default_graphs;
+    vector<vector<pair<int, int>>> default_requestss;
+    for(int r = 0; r < round; r++) {
+        default_graphs.push_back(Graph(100, 8, 5, 9, 0.25, 0.75, 2, 10, 0.2));
+        vector<pair<int, int>> default_requests;
+        for(int i = 0; i < 100; i++) {
+
+            pair<int, int> new_request = generate_new_request(100);
+            while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 3) {
+                new_request = generate_new_request(100);
+            }
+            default_requests.push_back(new_request);
+        }
+        default_requestss.push_back(default_requests);
+    }
     for(string X_name : X_names) {
         map<string, double> input_parameter = default_setting;
 
@@ -73,15 +88,7 @@ int main(){
             int request_cnt = input_parameter["request_cnt"];
             int time_limit = input_parameter["time_limit"];
 
-            Graph default_graph(100, 8, 5, 9, 0.25, 0.75, 2, 10, 0.2);
-            vector<pair<int, int>> default_requests;
-            for(int i = 0; i < 100; i++) {
-                pair<int, int> new_request = generate_new_request(100);
-                while((int)default_graph.get_path(new_request.first, new_request.second).size() <= 3) {
-                    new_request = generate_new_request(100);
-                }
-                default_requests.push_back(new_request);
-            }
+
             #pragma omp parallel for
             for(int r = 0; r < round; r++){
                 string round_str = to_string(r);
@@ -104,14 +111,14 @@ int main(){
 
                 Graph graph(num_nodes, time_limit, memory_lb, memory_up, A, B, n, T, tao);
                 if(X_name == "request_cnt") {
-                    graph = default_graph;
+                    graph = default_graphs[r];
                 }
 
                 ofs << "--------------- in round " << r << " -------------" <<endl;
                 vector<pair<int, int>> requests;
                 for(int i = 0; i < request_cnt; i++) {
                     if(X_name == "request_cnt") {
-                        requests.push_back(default_requests[i]);
+                        requests.push_back(default_requestss[r][i]);
                         continue;
                     }
                     pair<int, int> new_request = generate_new_request(num_nodes);
