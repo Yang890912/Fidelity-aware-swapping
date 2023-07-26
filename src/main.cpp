@@ -60,7 +60,6 @@ int main(){
     
 
     int round = 30;
-    vector<pair<int, int>> last_requests;
     for(string X_name : X_names) {
         map<string, double> input_parameter = default_setting;
 
@@ -115,7 +114,6 @@ int main(){
                     requests.push_back(new_request);
                 }
 
-                last_requests = requests;
                 vector<AlgorithmBase*> algorithms;
                 algorithms.emplace_back(new MyAlgo1(graph, requests));
                 algorithms.emplace_back(new MyAlgo2(graph, requests));
