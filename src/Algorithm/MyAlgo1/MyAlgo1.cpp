@@ -178,7 +178,7 @@ void MyAlgo1::run() {
     // beta(v, t) = beta(v, t)(1 + eps(q / beta(v, t))
 
     int round = 3;
-    while(round--) {
+    while(round-- && !requests.empty()) {
         variable_initialize();
         while(obj < 1.0) {
             // cerr << "obj = " << obj << endl;
