@@ -254,6 +254,7 @@ void MyAlgo1::run() {
         });
         // cerr << "[MyAlgo1] " << shapes.size() << endl;
         vector<bool> used(requests.size(), false);
+        vector<int> finished;
         for(pair<double, Shape_vector> P : shapes) {
             Shape shape = Shape(P.second);
             int request_index = -1;
@@ -268,7 +269,13 @@ void MyAlgo1::run() {
                 used[request_index] = true;
                 // cerr << "[MyAlgo1] " << P.first << " " << P.second.size() << endl;
                 graph.reserve_shape(shape);
+                finished.push_back(request_index);
             }
+        }
+
+        sort(requests.rbegin(), requests.rend());
+        for(auto fin : finished) {
+            requests.erase(requests.begin() + fin);
         }
     }
 
