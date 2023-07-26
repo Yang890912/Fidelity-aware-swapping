@@ -147,8 +147,8 @@ void DFS(int x, vector<bool> &vis, vector<int> &par, vector<vector<int>> &adj) {
     }
 }
 vector<int> Graph::get_path(int from, int to) {
-    vector<bool> vis(num_nodes, false);
-    vector<int> par(num_nodes, -1);
+    vector<bool> vis(num_nodes + 1, false);
+    vector<int> par(num_nodes + 1, -1);
     par[from] = -1;
     DFS(from, vis, par, adj_list);
     vector<int> path;

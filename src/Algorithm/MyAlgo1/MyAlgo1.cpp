@@ -230,7 +230,11 @@ void MyAlgo1::run() {
                     int node_id = shape[i].first;
                     double theta = P.second;
                     double original = beta[node_id][t];
-                    beta[node_id][t] = beta[node_id][t] * (1 + epsilon * (q / (graph.get_node_memory_at(node_id, t) / theta)));
+                    if(graph.get_node_memory_at(node_id, t) == 0) {
+                        beta[node_id][t] = INF;
+                    } else {
+                        beta[node_id][t] = beta[node_id][t] * (1 + epsilon * (q / (graph.get_node_memory_at(node_id, t) / theta)));
+                    }
                     obj += (beta[node_id][t] - original) * theta;
                 }
             }
