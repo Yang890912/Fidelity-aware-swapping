@@ -34,7 +34,7 @@ int main(){
     default_setting["num_nodes"] = 100;
     default_setting["request_cnt"] = 30;
     default_setting["time_limit"] = 8;
-    default_setting["avg_memory"] = 8;
+    default_setting["avg_memory"] = 6;
     default_setting["tao"] = 0.2;
     Graph default_graph(100, 8, 6, 10, 0.25, 0.75, 2, 10, 0.2);
 
@@ -70,7 +70,7 @@ int main(){
             int num_nodes = input_parameter["num_nodes"];
             int avg_memory = input_parameter["avg_memory"];
             int memory_up = avg_memory + 2;
-            int memory_lb = avg_memory - 2;
+            int memory_lb = avg_memory - 1;
             int request_cnt = input_parameter["request_cnt"];
             int time_limit = input_parameter["time_limit"];
 
