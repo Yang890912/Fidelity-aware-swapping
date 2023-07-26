@@ -36,7 +36,7 @@ int main(){
     default_setting["time_limit"] = 8;
     default_setting["avg_memory"] = 6;
     default_setting["tao"] = 0.2;
-    Graph default_graph(100, 8, 4, 6, 0.25, 0.75, 2, 10, 0.2);
+    Graph default_graph(100, 8, 4, 8, 0.25, 0.75, 2, 10, 0.2);
     vector<pair<int, int>> default_requests;
     for(int i = 0; i < 100; i++) {
         pair<int, int> new_request = generate_new_request(100);
