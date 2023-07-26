@@ -70,7 +70,7 @@ int main(){
             int num_nodes = input_parameter["num_nodes"];
             int avg_memory = input_parameter["avg_memory"];
             int memory_up = avg_memory + 2;
-            int memory_lb = avg_memory - 1;
+            int memory_lb = avg_memory - 2;
             int request_cnt = input_parameter["request_cnt"];
             int time_limit = input_parameter["time_limit"];
 
