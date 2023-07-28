@@ -40,7 +40,7 @@ int main(){
     // init result
     string filename = string("ans/") + string("runtime.ans");    
 
-    int round = 50;
+    int round = 5;
 
     vector<map<string, map<string, double>>> result(round);            
     int num_nodes = default_setting["num_nodes"];
