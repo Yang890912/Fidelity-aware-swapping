@@ -1,8 +1,12 @@
 dependency = Network/Node/Node.o Network/Shape/Shape.o Network/Graph/Graph.o Algorithm/AlgorithmBase/AlgorithmBase.o config.o
 algorithm = Algorithm/MyAlgo2/MyAlgo2.o Algorithm/MyAlgo1/MyAlgo1.o Algorithm/MyAlgo3/MyAlgo3.o Algorithm/MyAlgo4/MyAlgo4.o Algorithm/MyAlgo5/MyAlgo5.o
+algorithm2 = Algorithm/MyAlgo3/MyAlgo3.o Algorithm/MyAlgo1_time/MyAlgo1_time.o
 gcc_flag = -g -Wall -Wextra -Os -Ofast --std=c++17
 
 all: a.out
+
+runtime: runtime.cpp $(dependency) $(algorithm2)
+	g++ -fopenmp -lrt $(gcc_flag) runtime.cpp $(dependency) $(algorithm2) -o runtime
 
 a.out: main.cpp $(dependency) $(algorithm)
 	g++ -fopenmp $(gcc_flag) main.cpp $(dependency) $(algorithm)
@@ -26,6 +30,10 @@ Algorithm/AlgorithmBase/AlgorithmBase.o: Algorithm/AlgorithmBase/AlgorithmBase.h
 Algorithm/MyAlgo1/MyAlgo1.o: Algorithm/MyAlgo1/MyAlgo1.h Algorithm/MyAlgo1/MyAlgo1.cpp config.h
 	g++ -c $(gcc_flag) Algorithm/MyAlgo1/MyAlgo1.h Algorithm/MyAlgo1/MyAlgo1.cpp config.h
 	mv MyAlgo1.o Algorithm/MyAlgo1/MyAlgo1.o
+
+Algorithm/MyAlgo1_time/MyAlgo1_time.o: Algorithm/MyAlgo1_time/MyAlgo1_time.h Algorithm/MyAlgo1_time/MyAlgo1_time.cpp config.h
+	g++ -c $(gcc_flag) Algorithm/MyAlgo1_time/MyAlgo1_time.h Algorithm/MyAlgo1_time/MyAlgo1_time.cpp config.h
+	mv MyAlgo1_time.o Algorithm/MyAlgo1_time/MyAlgo1_time.o
 
 Algorithm/MyAlgo2/MyAlgo2.o: Algorithm/MyAlgo2/MyAlgo2.h Algorithm/MyAlgo2/MyAlgo2.cpp config.h
 	g++ -c $(gcc_flag) Algorithm/MyAlgo2/MyAlgo2.h Algorithm/MyAlgo2/MyAlgo2.cpp config.h
@@ -55,6 +63,6 @@ clean:
 	rm -f a.out
 	find . -type f -name '*.o' -delete
 	find . -type f -name '*.h.gch' -delete
-	rm -f ../data/ans/*
+	rm -f ../data/ans/*.ans
 	rm -f ../data/log/*
 	rm -f ../data/input/*
