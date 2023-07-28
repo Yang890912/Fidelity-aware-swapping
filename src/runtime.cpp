@@ -131,15 +131,18 @@ int main(){
             //     }
             // }
 
+            string filename = "ans/" + X_name + "_" + "runtime" + ".ans";
+            ofstream ofs;
+            ofs.open(file_path + filename, ios::app);
+            ofs << change_value << ' ';
             for(string algo_name : algo_names){
-                string filename = "ans/" + X_name + "_" + "runtime" + ".ans";
-                ofstream ofs;
-                ofs.open(file_path + filename, ios::app);
-                ofs << change_value << ' ';
                 for(int r = 0; r < round; r++){
                     sum_res[algo_name]["runtime"] += result[r][algo_name]["runtime"];
                 }
+                ofs << sum_res[algo_name]["runtime"] / round << ' ';
             }
+            ofs << endl;
+            ofs.close();
         }
     }
 
