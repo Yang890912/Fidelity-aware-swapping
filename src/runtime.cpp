@@ -43,12 +43,7 @@ int main(){
     int round = 5;
 
     vector<map<string, map<string, double>>> result(round);            
-    int num_nodes = default_setting["num_nodes"];
-    int avg_memory = default_setting["avg_memory"];
-    int memory_up = avg_memory + 2;
-    int memory_lb = avg_memory - 2;
-    int request_cnt = default_setting["request_cnt"];
-    int time_limit = default_setting["time_limit"];
+
 
     vector<double> epsilon = {0.1, 0.3, 0.5, 0.7};
     vector<string> algo_names;
@@ -65,10 +60,16 @@ int main(){
     }
 
     for(string X_name : X_names) {
-        map<string, double> input_parameter = default_setting;
 
         for(double change_value : change_parameter[X_name]) {
-
+            map<string, double> input_parameter = default_setting;
+            input_parameter[X_name] = change_value;
+            int num_nodes = input_parameter["num_nodes"];
+            int avg_memory = input_parameter["avg_memory"];
+            int memory_up = avg_memory + 2;
+            int memory_lb = avg_memory - 2;
+            int request_cnt = input_parameter["request_cnt"];
+            int time_limit = input_parameter["time_limit"];
             #pragma omp parallel for
             for(int r = 0; r < round; r++){
                 string round_str = to_string(r);
@@ -79,7 +80,7 @@ int main(){
                 //     cerr<<"error:\tsystem proccess python error"<<endl;
                 //     exit(1);
                 // }
-                double A = 0.25, B = 0.75, tao = default_setting["tao"], T = 10, n = 2;
+                double A = 0.25, B = 0.75, tao = input_parameter["tao"], T = 10, n = 2;
 
                 Graph graph(num_nodes, time_limit, memory_lb, memory_up, A, B, n, T, tao);
 
