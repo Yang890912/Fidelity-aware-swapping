@@ -64,7 +64,6 @@ int main(){
         fstream file( file_path + filename, ios::out );
     }
 
-    #pragma omp parallel for
     for(string X_name : X_names) {
         map<string, double> input_parameter = default_setting;
 
