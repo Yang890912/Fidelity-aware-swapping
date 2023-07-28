@@ -65,10 +65,10 @@ class ChartGenerator:
         "mathtext.default": "default",
         "mathtext.it": "Times New Roman:italic",
         "mathtext.cal": "Times New Roman:italic",
-        # "mathtext.fontset": "regular"
-        # "figure.autolayout": True
-        # "text.usetex": True,
-        # "figure.dpi": 100,
+        # "mathtext.fontset": "regular",
+        # "figure.autolayout": True,
+        "text.usetex": True,
+        # "figure.dpi": 800
         }
         
         matplotlib.rcParams.update(andy_theme)
@@ -127,15 +127,22 @@ class ChartGenerator:
                 maxData = max(maxData, y[i][j])
                 minData = min(minData, y[i][j])
 
-        marker = ['o', 's', 'v', 'x', 'd']
-        for i in range(numOfAlgo - 1, -1, -1):
-            ax1.plot(x, y[i], color = color[i], lw = 2.5, linestyle = "-", marker = marker[i], markersize = 15, markerfacecolor = "none", markeredgewidth = 2.5)
+        marker = ['x', 'v', 'o', '^', '.']
+
+        Per = [0, 2, 1, 3, 4]
+        # for i in range(numOfAlgo - 1, -1, -1):
+        for _ in range(numOfAlgo):
+            i = Per[_]
+            if i == 1:
+                continue
+            ax1.plot(x, y[i], color = color[i], lw = 2.5, linestyle = "-", marker = marker[i], markersize = 15, markerfacecolor = "none", markeredgewidth = 2.5, zorder = -_)
         # plt.show()
 
         plt.xticks(fontsize = Xticks_fontsize)
         plt.yticks(fontsize = Yticks_fontsize)
         
-        AlgoName = ["MyAlgo1", "LP", "MyAlgo2", "Merge", "Linear"]
+        Per_AlgoName = ["MINE", "MINE_LP", "MFS", "Nesting", "Linear"]
+        AlgoName = Per_AlgoName[0:1] + Per_AlgoName[2:]
 
         leg = plt.legend(
             AlgoName,
@@ -181,26 +188,22 @@ class ChartGenerator:
         else:
             return "($" + "10" + "^{" + str(multiple) + "}" + "$)"
 
-def getFilename(x, y):
-    Xlabels = ["#RequestPerRound", "totalRequest", "#nodes", "r", "swapProbability", "alpha", "SocialNetworkDensity"]
-    Ylabels = ["algorithmRuntime", "waitingTime", "idleTime", "usedQubits", "temporaryRatio"]
-    return Xlabels[x] + "_" + Ylabels[y] + ".txt"
-
 if __name__ == "__main__":
     # data檔名 Y軸名稱 X軸名稱 Y軸要除多少(10的多少次方) Y軸起始座標 Y軸終止座標 Y軸座標間的間隔
     # ChartGenerator("numOfnodes_waitingTime.txt", "need #round", "#Request of a round", 0, 0, 25, 5)
     Xlabels = ["num_nodes", "request_cnt", "time_limit", "avg_memory", "tao"]
-    Ylabels = ["fidelity_gain", "succ_request_cnt", "utilization"]
+    # Ylabels = ["fidelity_gain", "succ_request_cnt", "utilization"]
+    Ylabels = ["utilization"]
     
     LabelsName = {}
-    LabelsName["num_nodes"] = "#Nodes"
-    LabelsName["request_cnt"] = "#Request"
-    LabelsName["time_limit"] = "|T|"
-    LabelsName["avg_memory"] = "Avg. Memory"
+    LabelsName["num_nodes"] = "\\#Nodes"
+    LabelsName["request_cnt"] = "\\#Request"
+    LabelsName["time_limit"] = "$|T|$"
+    LabelsName["avg_memory"] = "Average Memory"
     LabelsName["tao"] = "$\\it{\\tau}$"
     LabelsName["fidelity_gain"] = " Fidelity Sum"
-    LabelsName["succ_request_cnt"] = "#Fin. Request"
-    LabelsName["utilization"] = "Mem. Utilization (%)"
+    LabelsName["succ_request_cnt"] = "\#Finished Request"
+    LabelsName["utilization"] = "Memory Utilization (\%)"
 
 
     for Xlabel in Xlabels:
@@ -213,10 +216,14 @@ if __name__ == "__main__":
                 Ystart = 0
                 Yend = 25
                 Yinternal = 5
+                if Xlabel == "tao" or Xlabel == "num_nodes":
+                    Yend = 20
             elif Ylabel == "succ_request_cnt":
                 Ystart = 0
                 Yend = 25
                 Yinternal = 5
+                if Xlabel == "tao" or Xlabel == "num_nodes":
+                    Yend = 20
             elif Ylabel == "utilization":
                 Ystart = 0
                 Yend = 25
