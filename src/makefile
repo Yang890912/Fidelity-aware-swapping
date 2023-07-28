@@ -6,7 +6,7 @@ gcc_flag = -g -Wall -Wextra -Os -Ofast --std=c++17
 all: a.out
 
 runtime: runtime.cpp $(dependency) $(algorithm2)
-	g++ -fopenmp -lrt $(gcc_flag) runtime.cpp $(dependency) $(algorithm2) -o runtime
+	g++ -fopenmp $(gcc_flag) runtime.cpp $(dependency) $(algorithm2) -o runtime
 
 a.out: main.cpp $(dependency) $(algorithm)
 	g++ -fopenmp $(gcc_flag) main.cpp $(dependency) $(algorithm)
