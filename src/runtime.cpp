@@ -68,6 +68,8 @@ int main(){
         map<string, double> input_parameter = default_setting;
 
         for(double change_value : change_parameter[X_name]) {
+
+            #pragma omp parallel for
             for(int r = 0; r < round; r++){
                 string round_str = to_string(r);
                 // string filename = file_path + "input/round_" + round_str + ".input";
