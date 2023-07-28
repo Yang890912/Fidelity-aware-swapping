@@ -72,7 +72,8 @@ class ChartGenerator:
         }
         
         matplotlib.rcParams.update(andy_theme)
-        fig, ax1 = plt.subplots(figsize = (6, 4.5), dpi = 600)
+        # fig, ax1 = plt.subplots(figsize = (6, 4.5), dpi = 600)
+        fig, ax1 = plt.subplots(figsize = (8, 6), dpi = 600)
         # ax1.spines['top'].set_position(('axes', 0.5)
         # ax1.spines['right'].set_linewidth(1.5)
         # ax1.spines['bottom'].set_linewidth(1.5)
@@ -98,7 +99,7 @@ class ChartGenerator:
                 if i == 0:
                     x.append(data[i])
                 else:
-                    if Ylabel.endswith("(%)"):
+                    if Ylabel.endswith("(\\%)"):
                         _y.append(str(float(data[i]) * 100))        
                     else:
                         _y.append(data[i])
@@ -141,7 +142,7 @@ class ChartGenerator:
         plt.xticks(fontsize = Xticks_fontsize)
         plt.yticks(fontsize = Yticks_fontsize)
         
-        Per_AlgoName = ["MINE", "MINE_LP", "MFS", "Nesting", "Linear"]
+        Per_AlgoName = ["NM", "NM_LP", "FLTO", "Nesting", "Linear"]
         AlgoName = Per_AlgoName[0:1] + Per_AlgoName[2:]
 
         leg = plt.legend(
@@ -154,7 +155,7 @@ class ChartGenerator:
             handletextpad = 0.2,
             handlelength = 1,
             columnspacing = 0.8,
-            ncol = 3,
+            ncol = 2,
             facecolor = "None",
         )
 
@@ -162,15 +163,15 @@ class ChartGenerator:
         # Ylabel += self.genMultiName(Ypow)
         Xlabel += self.genMultiName(Xpow)
         plt.subplots_adjust(top = 0.81)
-        plt.subplots_adjust(left = 0.3)
-        plt.subplots_adjust(right = 0.95)
-        plt.subplots_adjust(bottom = 0.26)
+        plt.subplots_adjust(left = 0.22)
+        plt.subplots_adjust(right = 0.975)
+        plt.subplots_adjust(bottom = 0.23)
 
         plt.yticks(np.arange(Ystart, Yend + Yinterval, step = Yinterval), fontsize = Yticks_fontsize)
         plt.xticks(x)
         plt.ylabel(Ylabel, fontsize = Ylabel_fontsize)
         plt.xlabel(Xlabel, fontsize = Xlabel_fontsize, labelpad = 500)
-        ax1.yaxis.set_label_coords(-0.3, 0.5)
+        ax1.yaxis.set_label_coords(-0.2, 0.5)
         ax1.xaxis.set_label_coords(0.45, -0.27)
         # plt.show()
         # plt.tight_layout()
