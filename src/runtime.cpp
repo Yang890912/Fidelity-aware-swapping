@@ -55,7 +55,7 @@ int main(){
     for(double eps : epsilon) {
         algo_names.push_back("MyAlgo1_time" + to_string(eps));
     }
-    algo_names.push_back("MyAlgo2");
+    algo_names.push_back("MyAlgo3");
 
     vector<string> X_names = {"request_cnt"};
 
