@@ -40,13 +40,13 @@ int main(){
 
 
     map<string, vector<double>> change_parameter;
-    change_parameter["request_cnt"] = {2, 16, 30, 44, 58};
+    change_parameter["request_cnt"] = {4, 17, 30, 45, 59};
     change_parameter["num_nodes"] = {40, 70, 100, 130, 160};
     // change_parameter["time_limit"] = {10, 12, 14, 16, 18};
     change_parameter["time_limit"] = {6, 22};
     change_parameter["avg_memory"] = {3, 5, 7, 9, 11};
     change_parameter["tao"] = {0.2, 0.4, 0.6, 0.8, 1};
-    change_parameter["path_length"] = {3, 6, 9, 12, 15};
+    change_parameter["path_length"] = {5, 7, 9, 11, 13};
 
 
     // vector<string> X_names = {"time_limit", "request_cnt", "num_nodes", "avg_memory", "tao"};
