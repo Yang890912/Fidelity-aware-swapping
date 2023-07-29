@@ -346,12 +346,12 @@ void MyAlgo3::run() {
             Shape shape2 = calculate_best_shape2(src, dst).first;
             double cp1 = cp_value(shape1);
             double cp2 = cp_value(shape2);
-            if(cp1 > best_cp) {
+            if(cp1 > best_cp || (fabs(cp1 - best_cp) < EPS && shape1.get_node_mem_range().size() < best_shape.get_node_mem_range().size())) {
                 best_request = i;
                 best_shape = shape1;
                 best_cp = cp1;
             }
-            if(cp2 > best_cp) {
+            if(cp2 > best_cp || (fabs(cp2 - best_cp) < EPS && shape2.get_node_mem_range().size() < best_shape.get_node_mem_range().size())) {
                 best_request = i;
                 best_shape = shape2;
                 best_cp = cp2;
