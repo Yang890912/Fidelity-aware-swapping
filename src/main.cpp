@@ -36,20 +36,21 @@ int main(){
     default_setting["time_limit"] = 14;
     default_setting["avg_memory"] = 7;
     default_setting["tao"] = 0.2;
+    default_setting["path_length"] = -1;
 
 
     map<string, vector<double>> change_parameter;
-    change_parameter["request_cnt"] = {10, 20, 30, 40, 50};
+    change_parameter["request_cnt"] = {2, 16, 30, 44, 58};
     change_parameter["num_nodes"] = {40, 70, 100, 130, 160};
-    // change_parameter["time_limit"] = {6, 8, 10, 12, 14};
     // change_parameter["time_limit"] = {10, 12, 14, 16, 18};
     change_parameter["time_limit"] = {6, 22};
     change_parameter["avg_memory"] = {3, 5, 7, 9, 11};
     change_parameter["tao"] = {0.2, 0.4, 0.6, 0.8, 1};
+    change_parameter["path_length"] = {3, 6, 9, 12, 15};
 
 
     // vector<string> X_names = {"time_limit", "request_cnt", "num_nodes", "avg_memory", "tao"};
-    vector<string> X_names = {"time_limit"};
+    vector<string> X_names = {"path_length", "request_cnt"};
     vector<string> Y_names = {"fidelity_gain", "succ_request_cnt", "utilization"};
     vector<string> algo_names = {"MyAlgo1", "MyAlgo2", "MyAlgo3", "Merge", "Linear"};
     // init result
@@ -104,7 +105,14 @@ int main(){
             int memory_lb = avg_memory - 2;
             int request_cnt = input_parameter["request_cnt"];
             int time_limit = input_parameter["time_limit"];
-
+            int length_upper, length_lower;
+            if(input_parameter["path_length"] == -1) {
+                length_upper = num_nodes;
+                length_lower = 5;
+            } else {
+                length_upper = input_parameter["path_length"];
+                length_lower = input_parameter["path_length"];
+            }
 
             #pragma omp parallel for
             for(int r = 0; r < round; r++){
@@ -139,9 +147,11 @@ int main(){
                         continue;
                     }
                     pair<int, int> new_request = generate_new_request(num_nodes);
+                    int len = graph.get_path(new_request.first, new_request.second).size();
                     int cnt = 100;
-                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 4) {
+                    while(len < length_lower || len > length_upper) {
                         new_request = generate_new_request(num_nodes);
+                        len = graph.get_path(new_request.first, new_request.second).size();
                         if(cnt == 0) break;
                         cnt--;
                     }
