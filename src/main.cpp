@@ -46,7 +46,7 @@ int main(){
     change_parameter["time_limit"] = {6, 22};
     change_parameter["avg_memory"] = {3, 5, 7, 9, 11};
     change_parameter["tao"] = {0.2, 0.4, 0.6, 0.8, 1};
-    change_parameter["path_length"] = {7, 9, 11, 13, 15};
+    change_parameter["path_length"] = {7, 10, 13, 16, 19};
 
 
     // vector<string> X_names = {"time_limit", "request_cnt", "num_nodes", "avg_memory", "tao"};
@@ -79,7 +79,7 @@ int main(){
         for(int i = 0; i < 100; i++) {
 
             pair<int, int> new_request = generate_new_request(100);
-            int cnt = 100;
+            int cnt = 1000;
             while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 4) {
                 new_request = generate_new_request(100);
                 if(cnt == 0) break;
