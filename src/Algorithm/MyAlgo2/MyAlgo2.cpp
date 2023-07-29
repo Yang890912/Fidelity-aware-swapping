@@ -202,7 +202,7 @@ void MyAlgo2::run() {
         x[request_index][shape] += q;
     
         double ori = alpha[request_index];
-        alpha[request_index] = alpha[request_index] * (1 + 2 * epsilon * q);
+        alpha[request_index] = alpha[request_index] * (1 + 3 * epsilon * q);
         obj += (alpha[request_index] - ori);
 
         for(int i = 0; i < (int)shape.size(); i++) {
