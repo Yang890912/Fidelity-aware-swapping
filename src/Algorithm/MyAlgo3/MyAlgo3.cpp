@@ -184,6 +184,7 @@ double MyAlgo3::solve2(int left, int right, int t, int state, vector<int> &path)
             if(result < best || (fabs(result - best) <= EPS && dis_mid < best_dis_mid)) {
                 best = result;
                 record = {k, s};
+                best_dis_mid = dis_mid;
             }
         }
     }
