@@ -227,6 +227,39 @@ void MyAlgo2::run() {
         // cerr << "[MyAlgo1] obj = " << obj << endl;
     }
 
+    vector<pair<double, Shape_vector>> shapes;
+
+    for(int i = 0; i < (int)requests.size(); i++) {
+        for(auto P : x[i]) {
+            shapes.push_back({P.second, P.first});
+        }
+    }
+
+    sort(shapes.rbegin(), shapes.rend(), [](pair<double, Shape_vector> left, pair<double, Shape_vector> right) {
+        if(fabs(left.first - right.first) >= EPS) return left.first < right.first;
+        if(left.second.size() != right.second.size()) return left.second.size() > right.second.size();
+        return left.second < right.second;
+    });
+
+    vector<bool> used(requests.size(), false);
+    vector<int> finished;
+    for(pair<double, Shape_vector> P : shapes) {
+        Shape shape = Shape(P.second);
+        int request_index = -1;
+        for(int i = 0; i < (int)requests.size(); i++) {
+            if(requests[i] == make_pair(shape.get_node_mem_range().front().first, shape.get_node_mem_range().back().first)) {
+                request_index = i;
+            }
+        }
+
+        if(used[request_index]) continue;
+        if(graph.check_resource(shape)) {
+            used[request_index] = true;
+            // cerr << "[MyAlgo1] " << P.first << " " << P.second.size() << endl;
+            graph.reserve_shape(shape);
+            finished.push_back(request_index);
+        }
+    }
     double max_xim_sum = 0;
     double usage = 0;
 
@@ -253,8 +286,7 @@ void MyAlgo2::run() {
         max_xim_sum = max(max_xim_sum, xim_sum);
     }
 
-    res["succ_request_cnt"] /= max_xim_sum;
-    res["succ_request_cnt"] = min(res["succ_request_cnt"] * (1 + epsilon * 2), (double)request_cnt);
+    res["succ_request_cnt"] = max(res["succ_request_cnt"] * (1 + epsilon * 2) / max_xim_sum, (double)graph.get_succ_request_cnt());
     // res["fidelity_gain"] /= max_xim_sum;
     res["fidelity_gain"] = res["succ_request_cnt"];
     res["utilization"] = (usage / ((double)memory_total_LP * (double)graph.get_time_limit())) / max_xim_sum;
