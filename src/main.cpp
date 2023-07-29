@@ -79,13 +79,7 @@ int main(){
         for(int i = 0; i < 100; i++) {
 
             pair<int, int> new_request = generate_new_request(100);
-            int cnt = 1000;
             while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 4) {
-                new_request = generate_new_request(100);
-                if(cnt == 0) break;
-                cnt--;
-            }
-            while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 3) {
                 new_request = generate_new_request(100);
             }
             default_requests.push_back(new_request);
@@ -101,8 +95,8 @@ int main(){
             
             int num_nodes = input_parameter["num_nodes"];
             int avg_memory = input_parameter["avg_memory"];
-            int memory_up = avg_memory + 2;
-            int memory_lb = avg_memory - 2;
+            int memory_up = avg_memory + 1;
+            int memory_lb = avg_memory - 1;
             int request_cnt = input_parameter["request_cnt"];
             int time_limit = input_parameter["time_limit"];
             int length_upper, length_lower;
@@ -148,7 +142,7 @@ int main(){
                     }
                     pair<int, int> new_request = generate_new_request(num_nodes);
                     int len = graph.get_path(new_request.first, new_request.second).size();
-                    int cnt = 100;
+                    int cnt = 1000;
                     while(len < length_lower || len > length_upper) {
                         new_request = generate_new_request(num_nodes);
                         len = graph.get_path(new_request.first, new_request.second).size();
