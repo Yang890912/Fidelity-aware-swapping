@@ -46,7 +46,7 @@ int main(){
     change_parameter["time_limit"] = {6, 22};
     change_parameter["avg_memory"] = {3, 5, 7, 9, 11};
     change_parameter["tao"] = {0.2, 0.4, 0.6, 0.8, 1};
-    change_parameter["path_length"] = {7, 8, 9, 10, 11};
+    change_parameter["path_length"] = {7, 9, 11, 13, 15};
 
 
     // vector<string> X_names = {"time_limit", "request_cnt", "num_nodes", "avg_memory", "tao"};
@@ -110,8 +110,8 @@ int main(){
                 length_upper = num_nodes;
                 length_lower = 5;
             } else {
-                length_upper = input_parameter["path_length"];
-                length_lower = input_parameter["path_length"];
+                length_upper = input_parameter["path_length"] + 1;
+                length_lower = input_parameter["path_length"] - 1;
             }
 
             #pragma omp parallel for
