@@ -69,6 +69,12 @@ int main(){
         for(int i = 0; i < 100; i++) {
 
             pair<int, int> new_request = generate_new_request(100);
+            int cnt = 100;
+            while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 10) {
+                new_request = generate_new_request(100);
+                if(cnt == 0) break;
+                cnt--;
+            }
             while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 3) {
                 new_request = generate_new_request(100);
             }
@@ -124,6 +130,12 @@ int main(){
                         continue;
                     }
                     pair<int, int> new_request = generate_new_request(num_nodes);
+                    int cnt = 100;
+                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 10) {
+                        new_request = generate_new_request(num_nodes);
+                        if(cnt == 0) break;
+                        cnt--;
+                    }
                     while((int)graph.get_path(new_request.first, new_request.second).size() <= 3) {
                         new_request = generate_new_request(num_nodes);
                     }
