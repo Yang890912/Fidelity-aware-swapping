@@ -33,7 +33,7 @@ int main(){
     map<string, double> default_setting;
     default_setting["num_nodes"] = 100;
     default_setting["request_cnt"] = 30;
-    default_setting["time_limit"] = 16;
+    default_setting["time_limit"] = 14;
     default_setting["avg_memory"] = 7;
     default_setting["tao"] = 0.2;
 
@@ -42,7 +42,7 @@ int main(){
     change_parameter["request_cnt"] = {10, 20, 30, 40, 50};
     change_parameter["num_nodes"] = {40, 70, 100, 130, 160};
     // change_parameter["time_limit"] = {6, 8, 10, 12, 14};
-    change_parameter["time_limit"] = {12, 14, 16, 18, 20};
+    change_parameter["time_limit"] = {10, 12, 14, 16, 18};
     change_parameter["avg_memory"] = {5, 7, 9, 11, 13};
     change_parameter["tao"] = {0.2, 0.4, 0.6, 0.8, 1};
 
