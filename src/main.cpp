@@ -41,8 +41,8 @@ int main(){
     map<string, vector<double>> change_parameter;
     change_parameter["request_cnt"] = {10, 20, 30, 40, 50};
     change_parameter["num_nodes"] = {50, 100, 150, 200, 250};
-    change_parameter["time_limit"] = {6, 8, 10, 12, 14};
-    // change_parameter["time_limit"] = {8, 12, 16, 20, 24};
+    // change_parameter["time_limit"] = {6, 8, 10, 12, 14};
+    change_parameter["time_limit"] = {6, 10, 14, 18, 22};
     change_parameter["avg_memory"] = {5, 7, 9, 11, 13};
     change_parameter["tao"] = {0.2, 0.4, 0.6, 0.8, 1};
 
