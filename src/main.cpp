@@ -46,7 +46,7 @@ int main(){
     change_parameter["time_limit"] = {6, 22};
     change_parameter["avg_memory"] = {3, 5, 7, 9, 11};
     change_parameter["tao"] = {0.2, 0.4, 0.6, 0.8, 1};
-    change_parameter["path_length"] = {10, 11, 12, 13, 14};
+    change_parameter["path_length"] = {11, 12, 13, 14, 15};
 
 
     // vector<string> X_names = {"time_limit", "request_cnt", "num_nodes", "avg_memory", "tao"};
