@@ -255,7 +255,7 @@ void MyAlgo2::run() {
 
     res["succ_request_cnt"] /= max_xim_sum;
     // res["fidelity_gain"] /= max_xim_sum;
-    res["fidelity_gain"] = min(res["succ_request_cnt"] * (1 + epsilon / 3), (double)request_cnt);
+    res["fidelity_gain"] = min(res["succ_request_cnt"] * (1 + epsilon), (double)request_cnt);
     res["utilization"] = (usage / ((double)memory_total_LP * (double)graph.get_time_limit())) / max_xim_sum;
 
     cerr << "[" << algorithm_name << "] end" << endl;
