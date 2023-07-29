@@ -22,6 +22,7 @@ class MyAlgo2 : public AlgorithmBase {
     pair<Shape_vector, double> find_min_shape(int src, int dst);
     double recursion_calculate_min_shape(int left, int right, int t, vector<int> &path);
     Shape_vector recursion_find_shape(int left, int right, int t, vector<int> &path);
+    int request_cnt;
 public:
     MyAlgo2(Graph graph, vector<pair<int, int>> requests);
     void run();

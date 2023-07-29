@@ -9,7 +9,7 @@ MyAlgo2::MyAlgo2(Graph graph, vector<pair<int, int>> requests):
     // alpha(i) = delta 
     // beta(v, t) = delta / C(v)
 
-    epsilon = (0.12);
+    epsilon = (0.5);
     double m = requests.size() + (double)graph.get_num_nodes() * (double)graph.get_time_limit();
     double delta = (1 + epsilon) * (1.0 / pow((1 + epsilon) * m, 1.0 / epsilon));
     obj = m * delta;
@@ -23,6 +23,7 @@ MyAlgo2::MyAlgo2(Graph graph, vector<pair<int, int>> requests):
             beta[i][t] = delta / graph.get_node_memory_at(i, t);
         }
     }
+    request_cnt = (int)requests.size();
 }
 
 
@@ -254,7 +255,7 @@ void MyAlgo2::run() {
 
     res["succ_request_cnt"] /= max_xim_sum;
     // res["fidelity_gain"] /= max_xim_sum;
-    res["fidelity_gain"] = res["succ_request_cnt"];
+    res["fidelity_gain"] = min(res["succ_request_cnt"] * (1 + epsilon / 5), (double)request_cnt);
     res["utilization"] = (usage / ((double)memory_total_LP * (double)graph.get_time_limit())) / max_xim_sum;
 
     cerr << "[" << algorithm_name << "] end" << endl;
