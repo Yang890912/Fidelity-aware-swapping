@@ -40,7 +40,7 @@ int main(){
 
     map<string, vector<double>> change_parameter;
     change_parameter["request_cnt"] = {10, 20, 30, 40, 50};
-    change_parameter["num_nodes"] = {50, 100, 150, 200, 250};
+    change_parameter["num_nodes"] = {40, 70, 100, 130, 160};
     // change_parameter["time_limit"] = {6, 8, 10, 12, 14};
     change_parameter["time_limit"] = {12, 14, 16, 18, 20};
     change_parameter["avg_memory"] = {5, 7, 9, 11, 13};
@@ -78,7 +78,7 @@ int main(){
 
             pair<int, int> new_request = generate_new_request(100);
             int cnt = 100;
-            while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 7) {
+            while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 8) {
                 new_request = generate_new_request(100);
                 if(cnt == 0) break;
                 cnt--;
@@ -139,7 +139,7 @@ int main(){
                     }
                     pair<int, int> new_request = generate_new_request(num_nodes);
                     int cnt = 100;
-                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 7) {
+                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 4) {
                         new_request = generate_new_request(num_nodes);
                         if(cnt == 0) break;
                         cnt--;
