@@ -168,6 +168,8 @@ double MyAlgo3::solve2(int left, int right, int t, int state, vector<int> &path)
     if(caled2[left][right][t][state]) return dp2[left][right][t][state];
 
     double best = solve2(left, right, t - 1, state, path) + 1.0 / left_remain + 1.0 / right_remain;
+    int best_dis_mid = (right - left + 1);
+
     pair<int, int> record = {-1, -1};
 
     for(int k = left + 1; k < right; k++) {
@@ -178,7 +180,8 @@ double MyAlgo3::solve2(int left, int right, int t, int state, vector<int> &path)
             double left_result = solve2(left, k, t - 1, l_state, path);
             double right_result = solve2(k, right, t - 1, r_state, path);
             double result = left_result + right_result + 1.0 / left_remain + 1.0 / right_remain;
-            if(result < best) {
+            int dis_mid = abs((left + right) / 2 - k);
+            if(result < best || (fabs(result - best) <= EPS && dis_mid < best_dis_mid)) {
                 best = result;
                 record = {k, s};
             }
@@ -346,12 +349,12 @@ void MyAlgo3::run() {
             Shape shape2 = calculate_best_shape2(src, dst).first;
             double cp1 = cp_value(shape1);
             double cp2 = cp_value(shape2);
-            if(cp1 > best_cp || (fabs(cp1 - best_cp) < EPS && shape1.get_node_mem_range().size() < best_shape.get_node_mem_range().size())) {
+            if(cp1 > best_cp) {
                 best_request = i;
                 best_shape = shape1;
                 best_cp = cp1;
             }
-            if(cp2 > best_cp || (fabs(cp2 - best_cp) < EPS && shape2.get_node_mem_range().size() < best_shape.get_node_mem_range().size())) {
+            if(cp2 > best_cp) {
                 best_request = i;
                 best_shape = shape2;
                 best_cp = cp2;
