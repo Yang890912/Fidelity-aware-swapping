@@ -70,7 +70,7 @@ int main(){
 
             pair<int, int> new_request = generate_new_request(100);
             int cnt = 100;
-            while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 7) {
+            while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 6) {
                 new_request = generate_new_request(100);
                 if(cnt == 0) break;
                 cnt--;
@@ -131,7 +131,7 @@ int main(){
                     }
                     pair<int, int> new_request = generate_new_request(num_nodes);
                     int cnt = 100;
-                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 7) {
+                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 6) {
                         new_request = generate_new_request(num_nodes);
                         if(cnt == 0) break;
                         cnt--;
