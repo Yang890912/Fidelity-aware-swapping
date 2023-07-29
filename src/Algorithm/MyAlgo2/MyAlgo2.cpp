@@ -242,7 +242,6 @@ void MyAlgo2::run() {
     });
 
     vector<bool> used(requests.size(), false);
-    vector<int> finished;
     for(pair<double, Shape_vector> P : shapes) {
         Shape shape = Shape(P.second);
         int request_index = -1;
@@ -257,9 +256,9 @@ void MyAlgo2::run() {
             used[request_index] = true;
             // cerr << "[MyAlgo1] " << P.first << " " << P.second.size() << endl;
             graph.reserve_shape(shape);
-            finished.push_back(request_index);
         }
     }
+
     double max_xim_sum = 0;
     double usage = 0;
 
@@ -286,7 +285,7 @@ void MyAlgo2::run() {
         max_xim_sum = max(max_xim_sum, xim_sum);
     }
 
-    res["succ_request_cnt"] = max(res["succ_request_cnt"] * (1 + epsilon * 2) / max_xim_sum, (double)graph.get_succ_request_cnt());
+    res["succ_request_cnt"] = max(res["succ_request_cnt"] * (1 + epsilon) / max_xim_sum, (double)graph.get_succ_request_cnt());
     // res["fidelity_gain"] /= max_xim_sum;
     res["fidelity_gain"] = res["succ_request_cnt"];
     res["utilization"] = (usage / ((double)memory_total_LP * (double)graph.get_time_limit())) / max_xim_sum;
