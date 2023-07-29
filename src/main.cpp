@@ -64,13 +64,21 @@ int main(){
     vector<Graph> default_graphs;
     vector<vector<pair<int, int>>> default_requestss;
     for(int r = 0; r < round; r++) {
-        default_graphs.push_back(Graph(100, 8, 5, 9, 0.25, 0.75, 2, 10, 0.2));
+
+        int num_nodes = default_setting["num_nodes"];
+        int avg_memory = default_setting["avg_memory"];
+        int memory_up = avg_memory + 2;
+        int memory_lb = avg_memory - 2;
+        // int request_cnt = default_setting["request_cnt"];
+        int time_limit = default_setting["time_limit"];
+        double A = 0.25, B = 0.75, tao = default_setting["tao"], T = 10, n = 2;
+        default_graphs.push_back(Graph(num_nodes, time_limit, memory_lb, memory_up, A, B, n, T, tao));
         vector<pair<int, int>> default_requests;
         for(int i = 0; i < 100; i++) {
 
             pair<int, int> new_request = generate_new_request(100);
             int cnt = 100;
-            while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 3) {
+            while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 7) {
                 new_request = generate_new_request(100);
                 if(cnt == 0) break;
                 cnt--;
@@ -131,7 +139,7 @@ int main(){
                     }
                     pair<int, int> new_request = generate_new_request(num_nodes);
                     int cnt = 100;
-                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 3) {
+                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 7) {
                         new_request = generate_new_request(num_nodes);
                         if(cnt == 0) break;
                         cnt--;
