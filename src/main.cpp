@@ -47,7 +47,7 @@ int main(){
     change_parameter["tao"] = {0.2, 0.4, 0.6, 0.8, 1};
 
 
-    vector<string> X_names = {"request_cnt", "num_nodes", "time_limit", "avg_memory", "tao"};
+    vector<string> X_names = {"request_cnt", "time_limit", "num_nodes", "avg_memory", "tao"};
     // vector<string> X_names = {"time_limit"};
     vector<string> Y_names = {"fidelity_gain", "succ_request_cnt", "utilization"};
     vector<string> algo_names = {"MyAlgo1", "MyAlgo2", "MyAlgo3", "Merge", "Linear"};
