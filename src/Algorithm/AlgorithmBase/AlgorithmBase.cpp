@@ -23,6 +23,7 @@ AlgorithmBase::AlgorithmBase(Graph graph, vector<pair<int, int>> requests):
     }
 
     memory_total *= graph.get_time_limit();
+    request_cnt = requests.size();
     cdf.resize(graph.get_boundary().size(), 0);
 }
 AlgorithmBase::~AlgorithmBase() {
@@ -71,7 +72,11 @@ void AlgorithmBase::update_res() {
     cdf.clear();
     vector<double> boundary = graph.get_boundary(), cnt = graph.get_cnt();
     cdf.resize(boundary.size(), 0);
-    cdf[0] = cnt[0];
+    double unfinish = request_cnt;
+    for(int i = 0; i < (int)boundary.size(); i++) {
+        unfinish -= cnt[i];
+    }
+    cdf[0] = cnt[0] + unfinish;
     for(int i = 1; i < (int)boundary.size(); i++) {
         cdf[i] = cdf[i - 1] + cnt[i];
     }

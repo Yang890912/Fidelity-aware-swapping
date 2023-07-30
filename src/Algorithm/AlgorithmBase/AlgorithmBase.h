@@ -17,7 +17,7 @@ protected:
     map<string, double> res;
     vector<double> cdf;
     vector<pair<int, int>> requests;
-    int time_limit, memory_total;
+    int time_limit, memory_total, request_cnt;
     void update_res();
     double A, B, n, T, tao;
     double bar(double F);
