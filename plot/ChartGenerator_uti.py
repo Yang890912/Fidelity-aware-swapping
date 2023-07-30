@@ -73,7 +73,8 @@ class ChartGenerator:
         
         matplotlib.rcParams.update(andy_theme)
         # fig, ax1 = plt.subplots(figsize = (6, 4.5), dpi = 600)
-        fig, ax1 = plt.subplots(figsize = (8, 6), dpi = 600)
+        fig, ax1 = plt.subplots(figsize = (6, 5), dpi = 600)
+        # fig, ax1 = plt.subplots(figsize = (8, 6), dpi = 600)
         # ax1.spines['top'].set_position(('axes', 0.5)
         # ax1.spines['right'].set_linewidth(1.5)
         # ax1.spines['bottom'].set_linewidth(1.5)
@@ -142,13 +143,14 @@ class ChartGenerator:
         plt.xticks(fontsize = Xticks_fontsize)
         plt.yticks(fontsize = Yticks_fontsize)
         
-        Per_AlgoName = ["NM", "NM_LP", "FLTO", "Nesting", "Linear"]
+        Per_AlgoName = ["NM", "UB", "FLTO", "Nesting", "Linear"]
         AlgoName = Per_AlgoName[0:1] + Per_AlgoName[2:]
 
         leg = plt.legend(
             AlgoName,
             loc = 10,
-            bbox_to_anchor = (0.4, 1.2),
+            # bbox_to_anchor = (0.4, 1.2),
+            bbox_to_anchor = (0.7, 0.15),
             prop = {"size": fontsize - 5, "family": "Times New Roman"},
             frameon = "False",
             labelspacing = 0.2,
@@ -162,22 +164,27 @@ class ChartGenerator:
         leg.get_frame().set_linewidth(0.0)
         # Ylabel += self.genMultiName(Ypow)
         Xlabel += self.genMultiName(Xpow)
-        plt.subplots_adjust(top = 0.81)
-        plt.subplots_adjust(left = 0.22)
+        # plt.subplots_adjust(top = 0.81)
+        # plt.subplots_adjust(left = 0.22)
+        # plt.subplots_adjust(right = 0.975)
+        # plt.subplots_adjust(bottom = 0.23)
+        plt.subplots_adjust(top = 0.97)
+        plt.subplots_adjust(left = 0.2)
         plt.subplots_adjust(right = 0.975)
-        plt.subplots_adjust(bottom = 0.23)
-
+        plt.subplots_adjust(bottom = 0.18)
         plt.yticks(np.arange(Ystart, Yend + Yinterval, step = Yinterval), fontsize = Yticks_fontsize)
         plt.xticks(x)
         plt.ylabel(Ylabel, fontsize = Ylabel_fontsize)
         plt.xlabel(Xlabel, fontsize = Xlabel_fontsize, labelpad = 500)
-        ax1.yaxis.set_label_coords(-0.2, 0.5)
-        ax1.xaxis.set_label_coords(0.45, -0.27)
+        # ax1.yaxis.set_label_coords(-0.2, 0.5)
+        # ax1.xaxis.set_label_coords(0.45, -0.27)
+        ax1.yaxis.set_label_coords(-0.17, 0.5)
+        ax1.xaxis.set_label_coords(0.45, -0.15)
         # plt.show()
         # plt.tight_layout()
         pdfName = dataName[0:-4].replace('#', '')
         plt.savefig('../data/pdf/Fie_{}.eps'.format(pdfName)) 
-        # plt.savefig('../data/pdf/{}.jpg'.format(pdfName)) 
+        plt.savefig('../data/pdf/{}.jpg'.format(pdfName)) 
         # Xlabel = Xlabel.replace(' (%)','')
         # Xlabel = Xlabel.replace('# ','')
         # Ylabel = Ylabel.replace('# ','')
@@ -194,7 +201,7 @@ if __name__ == "__main__":
     # ChartGenerator("numOfnodes_waitingTime.txt", "need #round", "#Request of a round", 0, 0, 25, 5)
     Xlabels = ["num_nodes", "request_cnt", "time_limit", "avg_memory", "tao"]
     # Ylabels = ["fidelity_gain", "succ_request_cnt", "utilization"]
-    Ylabels = ["utilization"]
+    Ylabels = ["succ_request_cnt", "utilization"]
     
     LabelsName = {}
     LabelsName["num_nodes"] = "\\#Nodes"
@@ -210,26 +217,21 @@ if __name__ == "__main__":
     for Xlabel in Xlabels:
         for Ylabel in Ylabels:
             dataFileName = Xlabel + '_' + Ylabel + '.ans'
-            Ystart = 0
-            Yend = 0
-            Yinternal = 0
-            if Ylabel == "fidelity_gain":
-                Ystart = 0
-                Yend = 25
-                Yinternal = 5
-                if Xlabel == "tao" or Xlabel == "num_nodes":
-                    Yend = 20
-            elif Ylabel == "succ_request_cnt":
-                Ystart = 0
-                Yend = 25
-                Yinternal = 5
-                if Xlabel == "tao" or Xlabel == "num_nodes":
-                    Yend = 20
-            elif Ylabel == "utilization":
-                Ystart = 0
-                Yend = 25
-                Yinternal = 5    
+            if Ylabel == "succ_request_cnt":
+                if Xlabel == "num_nodes":
+                    (Ystart, Yend, Yinternal) = (15, 30, 3)
+                if Xlabel == "avg_memory":
+                    (Ystart, Yend, Yinternal) = (10, 30, 5)
+                if Xlabel == "request_cnt":
+                    (Ystart, Yend, Yinternal) = (5, 30, 5)
+                if Xlabel == "time_limit":
+                    (Ystart, Yend, Yinternal) = (0, 30, 6)
+                if Xlabel == "tao":
+                    (Ystart, Yend, Yinternal) = (15, 25, 2) 
+            if Ylabel == "utilization":
+                (Ystart, Yend, Yinternal) = (6, 21, 3)
             ChartGenerator(dataFileName, LabelsName[Xlabel], LabelsName[Ylabel], 0, 0, Ystart, Yend, Yinternal)
+            
     # Xlabel
     # 0 #RequestPerRound
     # 1 totalRequest
