@@ -38,7 +38,7 @@ int main(){
     default_setting["tao"] = 0.2;
 
     map<string, vector<double>> change_parameter;
-    change_parameter["time_limit"] = {10, 20};
+    change_parameter["time_limit"] = {6, 22};
     vector<double> boundary = Graph(100, 8, 7, 7, 0.25, 0.75, 2, 10, 0.2).get_boundary();
     int round = 20;
 
