@@ -81,11 +81,23 @@ int main(){
         vector<pair<int, int>> default_requests;
         for(int i = 0; i < 100; i++) {
 
-            pair<int, int> new_request = generate_new_request(100);
+            pair<int, int> new_request = generate_new_request(num_nodes);
             while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 4) {
-                new_request = generate_new_request(100);
+                new_request = generate_new_request(num_nodes);
             }
+
             default_requests.push_back(new_request);
+        }
+        vector<pair<int, pair<int, int>>> len_req;
+        for(int i = 0; i < (int)default_requests.size(); i++) {
+            int src = default_requests[i].first, dst = default_requests[i].second;
+            len_req.push_back({default_graphs[r].get_path(src, dst).size(), {src, dst}});
+        }
+        sort(len_req.begin(), len_req.end());
+        default_requests.clear();
+        for(int i = 0; i < (int)len_req.size(); i++) {
+            int src = len_req[i].second.first, dst = len_req[i].second.second;
+            default_requests.push_back({src, dst});
         }
         default_requestss.push_back(default_requests);
     }
