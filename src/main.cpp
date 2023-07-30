@@ -40,7 +40,7 @@ int main(){
 
 
     map<string, vector<double>> change_parameter;
-    change_parameter["request_cnt"] = {4, 17, 30, 43, 56};
+    change_parameter["request_cnt"] = {6, 18, 30, 42, 54};
     change_parameter["num_nodes"] = {40, 70, 100, 130, 160};
     // change_parameter["time_limit"] = {10, 12, 14, 16, 18};
     change_parameter["time_limit"] = {6, 22};
@@ -50,7 +50,7 @@ int main(){
 
 
     // vector<string> X_names = {"time_limit", "request_cnt", "num_nodes", "avg_memory", "tao"};
-    vector<string> X_names = {"path_length", "request_cnt"};
+    vector<string> X_names = {"request_cnt", "path_length"};
     vector<string> Y_names = {"fidelity_gain", "succ_request_cnt", "utilization"};
     vector<string> algo_names = {"MyAlgo1", "MyAlgo2", "MyAlgo3", "Merge", "Linear"};
     // init result
