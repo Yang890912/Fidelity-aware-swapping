@@ -24,7 +24,7 @@ AlgorithmBase::AlgorithmBase(Graph graph, vector<pair<int, int>> requests):
 
     memory_total *= graph.get_time_limit();
     request_cnt = requests.size();
-    cdf.resize(graph.get_boundary().size(), 0);
+    cdf.resize(graph.get_boundary().size(), request_cnt);
 }
 AlgorithmBase::~AlgorithmBase() {
     if(DEBUG) cerr << "delete AlgorithmBase" << endl;
