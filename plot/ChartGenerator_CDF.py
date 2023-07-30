@@ -33,10 +33,10 @@ class ChartGenerator:
         # ]
         color = [
             "#FF0000",
-            "#00FF00",   
             "#0000FF",
             "#000000",
             "#900321",
+            "#00FF00",   
         ]
         # matplotlib.rcParams['text.usetex'] = True
 
@@ -133,8 +133,6 @@ class ChartGenerator:
         # for i in range(numOfAlgo - 1, -1, -1):
         for _ in range(numOfAlgo):
             i = Per[_]
-            if i == 1:
-                continue
             ax1.plot(x, y[i], color = color[i], lw = 2.5, linestyle = "-", marker = "none", markersize = 15, markerfacecolor = "none", markeredgewidth = 2.5, zorder = -_)
         # plt.show()
 
@@ -142,7 +140,7 @@ class ChartGenerator:
         plt.yticks(fontsize = Yticks_fontsize)
         
         Per_AlgoName = ["NM", "FLTO", "Nesting", "Linear"]
-        AlgoName = Per_AlgoName[0:1] + Per_AlgoName[2:]
+        AlgoName = Per_AlgoName
 
         leg = plt.legend(
             AlgoName,
