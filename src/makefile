@@ -12,7 +12,7 @@ a.out: main.cpp $(dependency) $(algorithm)
 	g++ -fopenmp $(gcc_flag) main.cpp $(dependency) $(algorithm)
 
 cdf: cdf.cpp $(dependency) $(algorithm)
-	g++ -fopenmp $(gcc_flag) main.cpp $(dependency) $(algorithm) -o cdf
+	g++ -fopenmp $(gcc_flag) cdf.cpp $(dependency) $(algorithm) -o cdf
 
 Network/Node/Node.o: Network/Node/Node.cpp Network/Node/Node.h config.h
 	g++ -c $(gcc_flag) Network/Node/Node.cpp Network/Node/Node.h config.h
