@@ -76,10 +76,10 @@ int main(){
         double A = 0.25, B = 0.75, tao = default_setting["tao"], T = 10, n = 2;
         default_graphs.push_back(Graph(num_nodes, time_limit, memory_lb, memory_up, A, B, n, T, tao));
         vector<pair<int, int>> default_requests;
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < 50; i++) {
 
             pair<int, int> new_request = generate_new_request(num_nodes);
-            while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 11) {
+            while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 9) {
                 new_request = generate_new_request(num_nodes);
             }
 
