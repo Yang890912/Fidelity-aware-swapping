@@ -74,7 +74,7 @@ int main(){
                 vector<pair<int, int>> requests;
                 for(int i = 0; i < request_cnt; i++) {
                     pair<int, int> new_request = generate_new_request(num_nodes);
-                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 3) {
+                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 10) {
                         new_request = generate_new_request(num_nodes);
                     }
                     requests.push_back(new_request);
@@ -104,7 +104,6 @@ int main(){
             string filename = "ans/" + X_name + to_string(change_value) + "_" + "cdf" + ".ans";
             ofstream ofs;
             ofs.open(file_path + filename, ios::out);
-            ofs << change_value << ' ';
             map<string, vector<double>> sum_cdf;
             for(string algo_name : algo_names){
                 sum_cdf[algo_name].clear();
@@ -114,7 +113,6 @@ int main(){
                         sum_cdf[algo_name][i] += result[r][algo_name]["cdf"][i];
                     }
                 }
-
             }
             for(int i = 0; i < (int)boundary.size(); i++) {
                 ofs << boundary[i] << ' ';
