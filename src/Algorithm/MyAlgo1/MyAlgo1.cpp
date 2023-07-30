@@ -250,7 +250,8 @@ void MyAlgo1::run() {
 
         for(int i = 0; i < (int)requests.size(); i++) {
             for(auto P : x[i]) {
-                shapes.push_back({Shape(P.first).get_fidelity(A, B, n, T, tao), P.first});
+                shapes.push_back({P.second, P.first});
+                // shapes.push_back({Shape(P.first).get_fidelity(A, B, n, T, tao), P.first});
             }
         }
 
