@@ -69,3 +69,5 @@ clean:
 	rm -f ../data/ans/*.ans
 	rm -f ../data/log/*
 	rm -f ../data/input/*
+	rm cdf
+	rm runtime
