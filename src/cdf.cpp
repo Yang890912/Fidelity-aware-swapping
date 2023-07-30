@@ -38,7 +38,7 @@ int main(){
     default_setting["tao"] = 0.2;
 
     map<string, vector<double>> change_parameter;
-    change_parameter["time_limit"] = {6, 22};
+    change_parameter["time_limit"] = {10, 22};
     vector<double> boundary = Graph(100, 8, 7, 7, 0.25, 0.75, 2, 10, 0.2).get_boundary();
     int round = 20;
 
@@ -75,7 +75,7 @@ int main(){
                 for(int i = 0; i < request_cnt; i++) {
                     pair<int, int> new_request = generate_new_request(num_nodes);
                     int len = (int)graph.get_path(new_request.first, new_request.second).size();
-                    while(len <= 5 || len >= 22) {
+                    while(len <= 7 || len >= 22) {
                         new_request = generate_new_request(num_nodes);
                         len = (int)graph.get_path(new_request.first, new_request.second).size();
                     }
