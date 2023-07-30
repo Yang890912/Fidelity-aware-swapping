@@ -74,7 +74,7 @@ int main(){
                 vector<pair<int, int>> requests;
                 for(int i = 0; i < request_cnt; i++) {
                     pair<int, int> new_request = generate_new_request(num_nodes);
-                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 10) {
+                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 5) {
                         new_request = generate_new_request(num_nodes);
                     }
                     requests.push_back(new_request);
