@@ -210,7 +210,7 @@ if __name__ == "__main__":
     LabelsName["avg_memory"] = "Average Memory"
     LabelsName["tao"] = "$\\it{\\tau}$"
     LabelsName["fidelity_gain"] = " Fidelity Sum"
-    LabelsName["succ_request_cnt"] = "\#Finished Request"
+    LabelsName["succ_request_cnt"] = "\#Accepted Request"
     LabelsName["utilization"] = "Memory Utilization (\%)"
 
 
