@@ -75,7 +75,7 @@ int main(){
                 for(int i = 0; i < request_cnt; i++) {
                     pair<int, int> new_request = generate_new_request(num_nodes);
                     int len = (int)graph.get_path(new_request.first, new_request.second).size();
-                    while(len <= 4 || len >= 25) {
+                    while(len <= 4 || len >= 22) {
                         new_request = generate_new_request(num_nodes);
                         len = (int)graph.get_path(new_request.first, new_request.second).size();
                     }
