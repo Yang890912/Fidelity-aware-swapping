@@ -74,15 +74,16 @@ int main(){
                 vector<pair<int, int>> requests;
                 for(int i = 0; i < request_cnt; i++) {
                     pair<int, int> new_request = generate_new_request(num_nodes);
-                    while((int)graph.get_path(new_request.first, new_request.second).size() <= 4) {
+                    int len = (int)graph.get_path(new_request.first, new_request.second).size();
+                    while(len <= 4 || len >= 16) {
                         new_request = generate_new_request(num_nodes);
+                        len = (int)graph.get_path(new_request.first, new_request.second).size();
                     }
                     requests.push_back(new_request);
                 }
 
                 vector<AlgorithmBase*> algorithms;
                 algorithms.emplace_back(new MyAlgo1(graph, requests));
-                algorithms.emplace_back(new MyAlgo2(graph, requests));
                 algorithms.emplace_back(new MyAlgo3(graph, requests));
                 algorithms.emplace_back(new MyAlgo4(graph, requests));
                 algorithms.emplace_back(new MyAlgo5(graph, requests));
@@ -117,7 +118,7 @@ int main(){
             for(int i = 0; i < (int)boundary.size(); i++) {
                 ofs << boundary[i] << ' ';
                 for(string algo_name : algo_names) {
-                    ofs << sum_cdf[algo_name][i] / (double)(request_cnt * round)<< ' ';
+                    ofs << sum_cdf[algo_name][i] / (double)(request_cnt * round) << ' ';
                 }
                 ofs << endl;
             }
