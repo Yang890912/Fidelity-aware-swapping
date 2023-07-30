@@ -1,7 +1,7 @@
 #include "MyAlgo5.h"
 
-MyAlgo5::MyAlgo5(Graph graph, vector<pair<int, int>> requests):
-    AlgorithmBase(graph, requests) {
+MyAlgo5::MyAlgo5(Graph graph, vector<pair<int, int>> _requests):
+    AlgorithmBase(graph, _requests) {
     algorithm_name = "Linear";
     linear_shape.resize(graph.get_num_nodes() + 1);
     random_shuffle(requests.begin(), requests.end());

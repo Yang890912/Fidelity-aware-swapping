@@ -1,7 +1,7 @@
 #include "MyAlgo4.h"
 
-MyAlgo4::MyAlgo4(Graph graph, vector<pair<int, int>> requests):
-    AlgorithmBase(graph, requests) {
+MyAlgo4::MyAlgo4(Graph graph, vector<pair<int, int>> _requests):
+    AlgorithmBase(graph, _requests) {
     algorithm_name = "Merge";
     merge_shape.resize(graph.get_num_nodes() + 1);
     random_shuffle(requests.begin(), requests.end());
