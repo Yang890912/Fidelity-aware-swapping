@@ -105,23 +105,23 @@ int main(){
             ofstream ofs;
             ofs.open(file_path + filename, ios::out);
             ofs << change_value << ' ';
+            map<string, vector<double>> sum_cdf;
             for(string algo_name : algo_names){
-                map<string, vector<double>> sum_cdf;
+                sum_cdf[algo_name].clear();
+                sum_cdf[algo_name].resize(boundary.size(), 0);
                 for(int r = 0; r < round; r++){
-                    sum_cdf[algo_name].clear();
-                    sum_cdf[algo_name].resize(boundary.size(), 0);
                     for(int i = 0; i < (int)boundary.size(); i++) {
                         sum_cdf[algo_name][i] += result[r][algo_name]["cdf"][i];
                     }
                 }
 
-                for(int i = 0; i < (int)boundary.size(); i++) {
-                    ofs << boundary[i] << ' ';
-                    for(string algo_name : algo_names) {
-                        ofs << sum_cdf[algo_name][i] << ' ';
-                    }
-                    ofs << endl;
+            }
+            for(int i = 0; i < (int)boundary.size(); i++) {
+                ofs << boundary[i] << ' ';
+                for(string algo_name : algo_names) {
+                    ofs << sum_cdf[algo_name][i] << ' ';
                 }
+                ofs << endl;
             }
             ofs << endl;
             ofs.close();
