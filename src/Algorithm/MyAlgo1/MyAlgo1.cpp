@@ -265,12 +265,12 @@ void MyAlgo1::run() {
             Shape shape = Shape(P.second);
             int request_index = -1;
             for(int i = 0; i < (int)requests.size(); i++) {
-                if(requests[i] == make_pair(shape.get_node_mem_range().front().first, shape.get_node_mem_range().back().first)) {
+                if(used[i] == false && requests[i] == make_pair(shape.get_node_mem_range().front().first, shape.get_node_mem_range().back().first)) {
                     request_index = i;
                 }
             }
 
-            if(used[request_index]) continue;
+            if(request_index == -1 || used[request_index]) continue;
             if(graph.check_resource(shape)) {
                 used[request_index] = true;
                 // cerr << "[MyAlgo1] " << P.first << " " << P.second.size() << endl;
