@@ -117,7 +117,7 @@ int main(){
             for(int i = 0; i < (int)boundary.size(); i++) {
                 ofs << boundary[i] << ' ';
                 for(string algo_name : algo_names) {
-                    ofs << sum_cdf[algo_name][i] << ' ';
+                    ofs << sum_cdf[algo_name][i] / (double)(request_cnt * round)<< ' ';
                 }
                 ofs << endl;
             }
