@@ -97,15 +97,16 @@ double MyAlgo1::recursion_calculate_min_shape(int left, int right, int t, vector
     
     double best = recursion_calculate_min_shape(left, right, t - 1, path);
     int best_k = -1;
-    // int best_dis_mid = (right - left + 1);
+    int best_dis_mid = (right - left + 1);
     for(int k = left + 1; k < right; k++) {
         double left_result = recursion_calculate_min_shape(left, k, t - 1, path);
         double right_result = recursion_calculate_min_shape(k, right, t - 1, path);
         double result = left_result + right_result;
-        // int dis_mid = abs((left + right) / 2 - k);
-        if(result < best) {
+        int dis_mid = abs((left + right) / 2 - k);
+        if(result < best || (fabs(result - best) <= EPS && dis_mid < best_dis_mid)) {
             best = result;
             best_k = k;
+            best_dis_mid = dis_mid;
         }
     }
 
