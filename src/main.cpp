@@ -79,7 +79,7 @@ int main(){
         for(int i = 0; i < 50; i++) {
 
             pair<int, int> new_request = generate_new_request(num_nodes);
-            while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 8) {
+            while((int)default_graphs[r].get_path(new_request.first, new_request.second).size() <= 6) {
                 new_request = generate_new_request(num_nodes);
             }
 
