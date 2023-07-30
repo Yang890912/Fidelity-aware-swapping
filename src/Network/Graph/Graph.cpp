@@ -99,7 +99,7 @@ Graph::Graph(int _num_nodes, int _time_limit, int memory_lower_bound, int memory
     }
 
     boundary.clear();
-    for(double d = 0.9; d <= 1; d += 0.01) {
+    for(double d = 0.9; d <= 1 + EPS; d += 0.01) {
         boundary.push_back(d);
     }
 
