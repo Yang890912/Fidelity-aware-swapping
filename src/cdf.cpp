@@ -39,7 +39,7 @@ int main(){
 
     map<string, vector<double>> change_parameter;
     change_parameter["time_limit"] = {6, 22};
-
+    vector<double> boundary = Graph(100, 8, 7, 7, 0.25, 0.75, 2, 10, 0.2).get_boundary();
     int round = 20;
 
     vector<map<string, map<string, vector<double>>>> result(round);
@@ -52,7 +52,7 @@ int main(){
         fstream file( file_path + filename, ios::out );
     }
 
-    vector<double> boundary;
+
     for(string X_name : X_names) {
         for(double change_value : change_parameter[X_name]) {
             map<string, double> input_parameter = default_setting;
@@ -108,6 +108,8 @@ int main(){
             }
             
             string filename = "ans/" + X_name + to_string(change_value) + "_" + "cdf" + ".ans";
+            fstream file( file_path + filename, ios::out );
+            
             ofstream ofs;
             ofs.open(file_path + filename, ios::app);
             ofs << change_value << ' ';
