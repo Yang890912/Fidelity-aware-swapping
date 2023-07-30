@@ -11,6 +11,9 @@ runtime: runtime.cpp $(dependency) $(algorithm2)
 a.out: main.cpp $(dependency) $(algorithm)
 	g++ -fopenmp $(gcc_flag) main.cpp $(dependency) $(algorithm)
 
+cdf: main.cpp $(dependency) $(algorithm)
+	g++ -fopenmp $(gcc_flag) main.cpp $(dependency) $(algorithm) -o cdf
+
 Network/Node/Node.o: Network/Node/Node.cpp Network/Node/Node.h config.h
 	g++ -c $(gcc_flag) Network/Node/Node.cpp Network/Node/Node.h config.h
 	mv Node.o Network/Node/Node.o

@@ -97,6 +97,14 @@ Graph::Graph(int _num_nodes, int _time_limit, int memory_lower_bound, int memory
             nodes[id].add_neighbor(v);
         }
     }
+
+    boundary.clear();
+    for(double d = 0.9; d <= 1; d += 0.01) {
+        boundary.push_back(d);
+    }
+
+    cnt.clear();
+    cnt.resize(boundary.size(), 0);
 }
 
 Graph::~Graph() {
@@ -135,6 +143,13 @@ double Graph::get_fidelity_gain() {
 
 int Graph::get_usage() {
     return usage;
+}
+
+vector<double> Graph::get_boundary() {
+    return boundary;
+}
+vector<double> Graph::get_cnt() {
+    return cnt;
 }
 
 void DFS(int x, vector<bool> &vis, vector<int> &par, vector<vector<int>> &adj) {
@@ -229,6 +244,14 @@ void Graph::reserve_shape(Shape shape) {
         } 
     }
 
-    fidelity_gain += shape.get_fidelity(A, B, n, T, tao);
+    double shape_fidelity = shape.get_fidelity(A, B, n, T, tao);
+    fidelity_gain += shape_fidelity;
     succ_request_cnt++;
+
+    for(int i = 0; i < (int)boundary.size(); i++) {
+        if(shape_fidelity < boundary[i]) {
+            cnt[i] = cnt[i] + 1;
+            break;
+        }
+    }
 }

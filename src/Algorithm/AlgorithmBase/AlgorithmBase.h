@@ -15,8 +15,10 @@ protected:
     string algorithm_name;
     Graph graph;
     map<string, double> res;
+    vector<double> cdf;
     vector<pair<int, int>> requests;
     int time_limit, memory_total;
+    void update_res();
     double A, B, n, T, tao;
     double bar(double F);
     double Fswap(double Fa, double Fb);
@@ -27,6 +29,7 @@ public:
     AlgorithmBase(Graph graph, vector<pair<int, int>> requests);
     map<string, double> get_res();
     double get_res(string str);
+    vector<double> get_cdf();
     string get_name();
     virtual ~AlgorithmBase();
     virtual void run() = 0;

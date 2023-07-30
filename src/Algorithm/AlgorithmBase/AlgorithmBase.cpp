@@ -39,6 +39,9 @@ map<string, double> AlgorithmBase::get_res() {
 double AlgorithmBase::get_res(string str) {
     return res[str];
 }
+vector<double> AlgorithmBase::get_cdf() {
+    return cdf;
+}
 
 double AlgorithmBase::bar(double F) {
     return (1.0 - F);
@@ -57,4 +60,18 @@ double AlgorithmBase::F2t(double F) {
 }
 double AlgorithmBase::pass_tao(double F) {
     return t2F(F2t(F) + tao);
+}
+
+void AlgorithmBase::update_res() {
+    res["fidelity_gain"] = graph.get_fidelity_gain();
+    res["succ_request_cnt"] = graph.get_succ_request_cnt();
+    res["utilization"] = (double)graph.get_usage() / (double)memory_total;
+
+    cdf.clear();
+    vector<double> boundary = graph.get_boundary(), cnt = graph.get_cnt();
+    cdf.resize(boundary.size(), 0);
+    cdf[0] = cnt[0];
+    for(int i = 1; i < (int)boundary.size(); i++) {
+        cdf[i] = cdf[i - 1] + cnt[i];
+    }
 }

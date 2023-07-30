@@ -111,9 +111,7 @@ void MyAlgo4::run() {
 
         if(find) {
             graph.reserve_shape(Shape(shape));
-            res["fidelity_gain"] = graph.get_fidelity_gain();
-            res["succ_request_cnt"] = graph.get_succ_request_cnt();
-            res["utilization"] = (double)graph.get_usage() / (double)memory_total;
+            update_res();
         }
     }
     cerr << "[" << algorithm_name << "] end" << endl;

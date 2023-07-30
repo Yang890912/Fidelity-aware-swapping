@@ -28,6 +28,7 @@ class Graph {
     vector<Node> nodes;
     vector<vector<int>> adj_list;
     vector<set<int>> adj_set;
+    vector<double> boundary, cnt;
 public:
     Graph(int _num_nodes, int _time_limit, int memory_lower_bound, int memory_upper_bound, double _A, double _B, double _n, double _T, double _tao);
     ~Graph();
@@ -45,6 +46,9 @@ public:
     double get_T();
     double get_tao();
     double get_fidelity_gain();
+
+    vector<double> get_boundary();
+    vector<double> get_cnt();
     bool check_resource(Shape shape);
     void reserve_shape(Shape shape);
     vector<int> get_path(int from, int to);
