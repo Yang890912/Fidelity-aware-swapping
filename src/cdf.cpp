@@ -44,7 +44,7 @@ int main(){
 
     vector<map<string, map<string, vector<double>>>> result(round);
     vector<string> X_names = {"time_limit"};
-    vector<string> algo_names = {"MyAlgo1", "MyAlgo2", "MyAlgo3", "Merge", "Linear"};
+    vector<string> algo_names = {"MyAlgo1", "MyAlgo3", "Merge", "Linear"};
 
 
     for(string X_name : X_names) {
