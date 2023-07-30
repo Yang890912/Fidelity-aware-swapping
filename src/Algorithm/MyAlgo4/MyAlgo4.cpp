@@ -4,6 +4,7 @@ MyAlgo4::MyAlgo4(Graph graph, vector<pair<int, int>> requests):
     AlgorithmBase(graph, requests) {
     algorithm_name = "Merge";
     merge_shape.resize(graph.get_num_nodes() + 1);
+    random_shuffle(requests.begin(), requests.end());
 }
 
 vector<vector<pair<int, int>>> MyAlgo4::recursion_build(int length) {

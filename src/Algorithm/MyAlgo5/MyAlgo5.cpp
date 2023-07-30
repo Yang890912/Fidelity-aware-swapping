@@ -4,6 +4,7 @@ MyAlgo5::MyAlgo5(Graph graph, vector<pair<int, int>> requests):
     AlgorithmBase(graph, requests) {
     algorithm_name = "Linear";
     linear_shape.resize(graph.get_num_nodes() + 1);
+    random_shuffle(requests.begin(), requests.end());
 }
 
 vector<vector<pair<int, int>>> MyAlgo5::recursion_build(int length) {
