@@ -46,12 +46,6 @@ int main(){
     vector<string> X_names = {"time_limit"};
     vector<string> algo_names = {"MyAlgo1", "MyAlgo2", "MyAlgo3", "Merge", "Linear"};
 
-    // init result
-    for(string X_name : X_names) {
-        string filename = "ans/" + X_name + "_" + "runtime" + ".ans";
-        fstream file( file_path + filename, ios::out );
-    }
-
 
     for(string X_name : X_names) {
         for(double change_value : change_parameter[X_name]) {
@@ -108,10 +102,8 @@ int main(){
             }
             
             string filename = "ans/" + X_name + to_string(change_value) + "_" + "cdf" + ".ans";
-            fstream file( file_path + filename, ios::out );
-            
             ofstream ofs;
-            ofs.open(file_path + filename, ios::app);
+            ofs.open(file_path + filename, ios::out);
             ofs << change_value << ' ';
             for(string algo_name : algo_names){
                 map<string, vector<double>> sum_cdf;
