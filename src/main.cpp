@@ -40,7 +40,7 @@ int main(){
 
 
     map<string, vector<double>> change_parameter;
-    change_parameter["request_cnt"] = {6, 18, 30, 42, 54};
+    change_parameter["request_cnt"] = {10, 20, 30, 40, 50};
     change_parameter["num_nodes"] = {40, 70, 100, 130, 160};
     // change_parameter["time_limit"] = {10, 12, 14, 16, 18};
     change_parameter["time_limit"] = {6, 22};
