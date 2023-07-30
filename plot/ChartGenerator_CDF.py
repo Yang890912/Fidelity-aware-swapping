@@ -193,7 +193,5 @@ class ChartGenerator:
             return "($" + "10" + "^{" + str(multiple) + "}" + "$)"
 
 if __name__ == "__main__":
-
-
-    ChartGenerator("time_limit22.000000_cdf.ans", "Accepted Request Fidelity", "CDF", 0, 0, 0, 1, 0.2)
     ChartGenerator("time_limit6.000000_cdf.ans", "Accepted Request Fidelity", "CDF", 0, 0, 0, 1, 0.2)
+    ChartGenerator("time_limit22.000000_cdf.ans", "Accepted Request Fidelity", "CDF", 0, 0, 0, 1, 0.2)
